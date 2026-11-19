@@ -1,0 +1,27 @@
+parameter,group,value,type,env_var,rationale
+random_seed,sampling,42,int,PYMC_RANDOM_SEED,Fixed seed so a test fit is reproducible.
+chains,sampling,1,int,PYMC_CHAINS,Single chain for a smoke test.
+cores,sampling,1,int,PYMC_CORES,Single worker for a smoke test.
+draws,sampling,50,int,PYMC_DRAWS,Few retained draws; enough to check that sampling starts.
+tune,sampling,50,int,PYMC_TUNE,Short warmup; not intended for inference.
+target_accept,sampling,0.90,float,PYMC_TARGET_ACCEPT,Relaxed NUTS acceptance for a cheap test run.
+context_mode,model_structure,mixed_ga2_else1,str,PYMC_CONTEXT_MODE,"G->A uses the 3-prime dinucleotide; other substitutions use the 3-prime single base."
+context_n,model_structure,3,int,PYMC_CONTEXT_N,Length of the flanking-context string read from the input table.
+min_context_count,model_structure,0,int,PYMC_MIN_CONTEXT_COUNT,Context levels are not dropped for rarity at this stage; G->A pooling is handled separately.
+min_sub_context_wt_count,model_structure,20,int,PYMC_MIN_SUB_CONTEXT_WT_COUNT,"Non-G->A type-by-base cells with fewer than this many wild-type counts are pooled to the type-level effect."
+drop_indels,model_structure,0,bool,PYMC_DROP_INDELS,Keep insertions and deletions in the likelihood.
+include_position_bio,model_structure,1,bool,PYMC_INCLUDE_POSITION_BIO,Fit the six biological position splines (AA + GA + G->A SHARED + shared-sub + insertion + deletion).
+include_position_err,model_structure,0,bool,PYMC_INCLUDE_POSITION_ERR,Do not fit a positional spline on the error arm.
+spline_df,model_structure,30,int,PYMC_SPLINE_DF,Degrees of freedom of the cubic B-spline basis (31 basis functions; 30 free under sum-to-zero).
+ga_pool_2mers,model_structure,"CC,CG,TC,TT",list,PYMC_GA_POOL_2MERS,Sparse G->A 3-prime dinucleotides pooled into the OTHER intercept and the shared G->A spline.
+wt_only_mut_types,model_structure,"C->A,G->T,deletion",list,,"Control arm omitted: C->A and G->T because of oxidative-damage inflation in ePCR; deletion because controls are too sparse."
+spline_sigma_floor,spline_regulariser,0.1,float,PYMC_PRIOR_SIGMA_SPLINE_FLOOR,Additive floor on every bio spline amplitude (sigma = floor + HalfNormal raw); prevents collapse to the zero boundary.
+spline_sum_to_zero,spline_regulariser,1,bool,PYMC_SPLINE_SUM_TO_ZERO,Hard sum-to-zero on each bio P-spline: sample n_basis-1 free coefficients and set the last to -sum(free) so the intercept owns the level.
+spline_smoothness_scale,spline_regulariser,0.25,float,PYMC_SPLINE_SMOOTHNESS_SCALE,Roughness penalty weight on second differences of the non-G->A substitution and indel splines.
+spline_smoothness_scale_ga_aa,spline_regulariser,0.08,float,PYMC_SPLINE_SMOOTHNESS_SCALE_GA_AA,Weaker roughness penalty on the G->A AA spline so a structured positional profile remains possible.
+spline_smoothness_scale_ga_non_aa,spline_regulariser,0.18,float,PYMC_SPLINE_SMOOTHNESS_SCALE_GA_NON_AA,Stronger roughness penalty on the G->A GA and SHARED splines.
+max_muts_per_rec,data,1000,int,MRA_MAX_MUTS_PER_REC,Applied when building the input table: keep consensus molecules with at most this many mutations.
+edge_trim,data,20,int,MRA_EDGE_TRIM,Applied when building the input table: drop this many bases from each end of each library amplicon.
+wt_groups,data,"WT,NEG,Sparsomycin,pUC19",list,MRA_WT_GROUPS,Sample-name groups pooled into the mutation-supply class.
+control_groups,data,ePCR,list,MRA_CONTROL_GROUPS,Sample-name groups pooled into the error-control class.
+context_k,data,5,int,MRA_CONTEXT_K,Flanking bases stored in five_prime / three_prime when the input table is built.

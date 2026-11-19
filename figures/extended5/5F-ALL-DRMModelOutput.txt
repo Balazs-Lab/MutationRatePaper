@@ -1,0 +1,56 @@
+
+Call:
+glm.nb(formula = all_muts ~ log_mu_aa + site + offset(log(all_seqs)), 
+    data = mut_type_df, init.theta = 0.5336296104, link = log)
+
+Coefficients:
+              Estimate Std. Error z value Pr(>|z|)    
+(Intercept)     0.1491     1.3338   0.112 0.910978    
+log_mu_aa       1.4567     0.2085   6.987 2.81e-12 ***
+siteIN_138_E    2.5649     1.0112   2.537 0.011196 *  
+siteIN_140_G    2.7172     0.8842   3.073 0.002119 ** 
+siteIN_143_Y    1.1046     0.9469   1.167 0.243393    
+siteIN_146_Q    0.6172     0.9669   0.638 0.523261    
+siteIN_148_Q    4.0795     0.9049   4.508 6.54e-06 ***
+siteIN_153_S   -1.0727     1.1020  -0.973 0.330354    
+siteIN_155_N    4.1746     0.9036   4.620 3.84e-06 ***
+siteIN_66_T     1.5665     0.9361   1.673 0.094239 .  
+siteIN_74_L     2.4743     0.9834   2.516 0.011869 *  
+siteIN_92_E     1.7467     0.9328   1.873 0.061125 .  
+sitep24_105_A   3.0702     1.2589   2.439 0.014732 *  
+sitep24_67_Q    6.3614     1.2518   5.082 3.74e-07 ***
+sitep24_70_K    5.7098     1.2648   4.514 6.35e-06 ***
+sitep24_74_N    4.7740     1.0763   4.435 9.19e-06 ***
+sitePro_24_L    2.4257     0.9584   2.531 0.011374 *  
+sitePro_46_M    2.9918     0.9128   3.278 0.001047 ** 
+sitePro_48_G    1.8551     0.9591   1.934 0.053079 .  
+sitePro_50_I    3.6759     0.9536   3.855 0.000116 ***
+sitePro_53_F    2.2120     0.9621   2.299 0.021503 *  
+sitePro_54_I    3.5198     0.8487   4.147 3.36e-05 ***
+sitePro_73_G    1.0702     0.8624   1.241 0.214627    
+sitePro_82_V    3.8515     0.8969   4.294 1.75e-05 ***
+sitePro_88_N    2.4188     0.8989   2.691 0.007130 ** 
+siteRT_184_M    6.0320     0.9345   6.455 1.08e-10 ***
+siteRT_215_T    1.6548     0.8485   1.950 0.051161 .  
+siteRT_219_K    3.8793     0.8440   4.596 4.30e-06 ***
+siteRT_65_K     4.1471     0.8667   4.785 1.71e-06 ***
+siteRT_67_D     2.7449     0.8479   3.237 0.001207 ** 
+siteRT_70_K     3.8563     0.8306   4.643 3.44e-06 ***
+siteRT_74_L     5.3389     0.9121   5.853 4.82e-09 ***
+siteRT_75_V     1.4229     0.9258   1.537 0.124303    
+---
+Signif. codes:  0 ‘***’ 0.001 ‘**’ 0.01 ‘*’ 0.05 ‘.’ 0.1 ‘ ’ 1
+
+(Dispersion parameter for Negative Binomial(0.5336) family taken to be 1)
+
+    Null deviance: 555.39  on 285  degrees of freedom
+Residual deviance: 322.73  on 253  degrees of freedom
+AIC: 2834.7
+
+Number of Fisher Scoring iterations: 1
+
+
+              Theta:  0.5336 
+          Std. Err.:  0.0439 
+
+ 2 x log-likelihood:  -2766.6840 

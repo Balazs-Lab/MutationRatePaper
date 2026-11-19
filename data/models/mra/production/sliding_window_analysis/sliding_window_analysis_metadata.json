@@ -1,0 +1,28 @@
+{
+  "model_version": "mra",
+  "input": "/Users/anitido/Bioinformatics/ERR-Seq_2/MutRatePaper/data/models/mra/productionFINAL/FINAL_mutation_supply_dataset.csv",
+  "output_dir": "/Users/anitido/Bioinformatics/ERR-Seq_2/MutRatePaper/data/models/mra/productionFINAL/sliding_window_analysis",
+  "n_site_rows": 41065,
+  "n_positions": 8213,
+  "window_configs": [
+    {
+      "window_size": 100,
+      "step_size": 10
+    },
+    {
+      "window_size": 150,
+      "step_size": 10
+    },
+    {
+      "window_size": 250,
+      "step_size": 25
+    }
+  ],
+  "output_csv_files": [
+    "sliding_window_observed_vs_bio_rate_100bp_step10.csv",
+    "sliding_window_observed_vs_bio_rate_150bp_step10.csv",
+    "sliding_window_observed_vs_bio_rate_250bp_step25.csv"
+  ],
+  "observed_rate_definition": "sum(wt_count)/sum(wt_coverage) - sum(control_count)/sum(control_coverage)",
+  "modeled_rate_definition": "bio_rate_median - error_rate_median (net bio supply)"
+}

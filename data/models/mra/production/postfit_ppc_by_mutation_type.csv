@@ -1,0 +1,15 @@
+mut_type,control_corrected,uses_nucleotide_context,correction_scheme,likelihood_family,obs_control,pred_control,obs_wt,pred_wt,bio_rate_mean,error_rate_mean,wt_ppc_ratio
+A->C,True,True,joint_control_wt,negative_binomial_sub_3p1_type_context_shared_spline_joint_control_wt,9,7.917125,172,177.300125,6.31071437006074e-06,1.3663002736112225e-07,1.0308146802325582
+A->G,True,True,joint_control_wt,negative_binomial_sub_3p1_type_context_shared_spline_joint_control_wt,77,73.619625,570,570.986875,1.9240571698201395e-05,1.2683098359034451e-06,1.0017313596491229
+A->T,True,True,joint_control_wt,negative_binomial_sub_3p1_type_context_shared_spline_joint_control_wt,1,1.613875,129,132.2615,4.767756684400982e-06,2.792091356937201e-08,1.0252829457364343
+C->A,False,True,wt_only_no_control,negative_binomial_sub_3p1_type_context_shared_spline_wt_only,308,0.0,298,296.618125,2.197395277619519e-05,0.0,0.9953628355704699
+C->G,True,True,joint_control_wt,negative_binomial_sub_3p1_type_context_shared_spline_joint_control_wt,0,0.709875,40,37.487625,2.780923580062062e-06,2.4266623991997832e-08,0.937190625
+C->T,True,True,joint_control_wt,negative_binomial_sub_3p1_type_context_shared_spline_joint_control_wt,123,135.789875,586,573.12325,3.6963477593418926e-05,4.956082293518488e-06,0.978026023890785
+G->A,True,True,joint_control_wt,negative_binomial_ga_3p2_aa_ga_shared_splines_joint_control_wt,136,136.316625,7915,7753.59025,0.0003387563895769064,3.6196099553071e-06,0.9796071067593177
+G->C,True,True,joint_control_wt,negative_binomial_sub_3p1_type_context_shared_spline_joint_control_wt,2,2.391125,157,161.509875,8.78232354868576e-06,6.418168695654307e-08,1.0287253184713376
+G->T,False,True,wt_only_no_control,negative_binomial_sub_3p1_type_context_shared_spline_wt_only,333,0.0,258,256.15925,1.4048736283769752e-05,0.0,0.9928653100775193
+T->A,True,True,joint_control_wt,negative_binomial_sub_3p1_type_context_shared_spline_joint_control_wt,2,2.469375,275,271.16275,1.4756684431312455e-05,6.73617181531647e-08,0.9860463636363637
+T->C,True,True,joint_control_wt,negative_binomial_sub_3p1_type_context_shared_spline_joint_control_wt,44,40.924375,287,291.77,1.4688094951054019e-05,1.1201032308696673e-06,1.0166202090592333
+T->G,True,True,joint_control_wt,negative_binomial_sub_3p1_type_context_shared_spline_joint_control_wt,2,2.422375,63,63.254125,3.3894701823444904e-06,6.682745681721198e-08,1.00403373015873
+deletion,False,False,wt_only_no_control,negative_binomial_deletion_spline_wt_only,5,0.0,634,637.99675,1.2798517258521614e-05,0.0,1.006304022082019
+insertion,True,False,joint_control_wt,negative_binomial_insertion_spline_joint_control_wt,4,4.47375,243,240.48875,2.5819425483550715e-06,2.8019591853206832e-08,0.9896656378600823

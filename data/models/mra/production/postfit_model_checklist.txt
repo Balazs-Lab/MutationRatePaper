@@ -1,0 +1,47 @@
+mra post-fit checklist
+=====================
+Parameters with r_hat > 1.01 or ESS < 400: 0
+Model: mra_joint_control_wt_nb_ga2_sub1_ga3_sum0_bio_splines
+Position splines: bio=True, err=False, df=30, smoothness_scale=0.25
+WT-only types: ['C->A', 'G->T', 'deletion']
+No-context types: ['insertion', 'deletion']
+Context (nucleotide) types: ['A->C', 'A->G', 'A->T', 'C->A', 'C->G', 'C->T', 'G->A', 'G->C', 'G->T', 'T->A', 'T->C', 'T->G']
+Likelihood map: {
+  "A->C": "negative_binomial_sub_3p1_type_context_shared_spline_joint_control_wt",
+  "A->G": "negative_binomial_sub_3p1_type_context_shared_spline_joint_control_wt",
+  "A->T": "negative_binomial_sub_3p1_type_context_shared_spline_joint_control_wt",
+  "C->A": "negative_binomial_sub_3p1_type_context_shared_spline_wt_only",
+  "C->G": "negative_binomial_sub_3p1_type_context_shared_spline_joint_control_wt",
+  "C->T": "negative_binomial_sub_3p1_type_context_shared_spline_joint_control_wt",
+  "G->A": "negative_binomial_ga_3p2_aa_ga_shared_splines_joint_control_wt",
+  "G->C": "negative_binomial_sub_3p1_type_context_shared_spline_joint_control_wt",
+  "G->T": "negative_binomial_sub_3p1_type_context_shared_spline_wt_only",
+  "T->A": "negative_binomial_sub_3p1_type_context_shared_spline_joint_control_wt",
+  "T->C": "negative_binomial_sub_3p1_type_context_shared_spline_joint_control_wt",
+  "T->G": "negative_binomial_sub_3p1_type_context_shared_spline_joint_control_wt",
+  "deletion": "negative_binomial_deletion_spline_wt_only",
+  "insertion": "negative_binomial_insertion_spline_joint_control_wt"
+}
+Recommended checks:
+1. Inspect divergences, R-hat, ESS (especially sigma_spline_*).
+2. WT PPC for all types; control PPC for control-corrected types only.
+3. Context: G->A 2-mer; other subs 1-base; indels none.
+   Bio position splines: 6 (G->A ['AA', 'GA', 'SHARED'] + non-G->A shared + insertion + deletion); sum_to_zero=True; sigma_floor=0.1.
+   G->A spline contexts (3): ['AA', 'GA', 'SHARED']
+   Dedicated G->A splines: AA, GA; remaining 2-mers use SHARED.
+   G->A sparse 2-mers pooled to OTHER intercept + SHARED spline: ['CC', 'CG', 'TC', 'TT']
+   G->A 2-mer contexts (13): ['AA', 'AC', 'AG', 'AT', 'CA', 'CT', 'GA', 'GC', 'GG', 'GT', 'OTHER', 'TA', 'TG']
+   Shared-sub spline types: ['A->C', 'A->G', 'A->T', 'C->A', 'C->G', 'C->T', 'G->C', 'G->T', 'T->A', 'T->C', 'T->G']
+   All possible 2-mers: ['AA', 'AC', 'AG', 'AT', 'CA', 'CC', 'CG', 'CT', 'GA', 'GC', 'GG', 'GT', 'TA', 'TC', 'TG', 'TT']
+   Spline rules: {
+  "G->A_AA": "dedicated position spline (AA 2-mer)",
+  "G->A_GA": "dedicated position spline (GA 2-mer)",
+  "G->A_shared": "shared position spline for all other G->A 2-mers (label SHARED)",
+  "shared_substitutions": "one position spline for all non-G->A substitutions",
+  "insertion": "dedicated insertion spline",
+  "deletion": "dedicated deletion spline",
+  "sum_to_zero": "each bio P-spline samples n_basis-1 free coefficients; last coefficient = -sum(free) so the intercept owns the level",
+  "total_bio_position_splines": 6
+}
+4. Review figures: ppc_*, mutation_spectrum, context_bio_supply_GtoA, position_bio_rate_*.
+5. Confirm G->A calibration and overall WT PPC are well-behaved.

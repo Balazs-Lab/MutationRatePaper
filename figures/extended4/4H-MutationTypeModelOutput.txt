@@ -1,0 +1,28 @@
+
+Call:
+glm.nb(formula = total_counts ~ log_mu_aa + avg_fitness + change_class + 
+    offset(log(total_sequences)), data = mut_type_df, init.theta = 0.4286527558, 
+    link = log)
+
+Coefficients:
+                    Estimate Std. Error z value Pr(>|z|)    
+(Intercept)           3.7401     1.3569   2.756  0.00584 ** 
+log_mu_aa             1.6417     0.2617   6.274 3.53e-10 ***
+avg_fitness           2.7434     0.4672   5.872 4.30e-09 ***
+change_classsimilar   1.0016     0.3105   3.226  0.00126 ** 
+---
+Signif. codes:  0 ‘***’ 0.001 ‘**’ 0.01 ‘*’ 0.05 ‘.’ 0.1 ‘ ’ 1
+
+(Dispersion parameter for Negative Binomial(0.4287) family taken to be 1)
+
+    Null deviance: 306.87  on 131  degrees of freedom
+Residual deviance: 171.32  on 128  degrees of freedom
+AIC: 2244.6
+
+Number of Fisher Scoring iterations: 1
+
+
+              Theta:  0.4287 
+          Std. Err.:  0.0430 
+
+ 2 x log-likelihood:  -2234.5740 

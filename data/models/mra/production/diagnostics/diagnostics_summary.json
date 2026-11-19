@@ -1,0 +1,31 @@
+{
+  "model": "mra_joint_control_wt_nb_ga2_sub1_ga3_sum0_bio_splines",
+  "wt_only_mut_types": [
+    "C->A",
+    "G->T",
+    "deletion"
+  ],
+  "context_mut_types": [
+    "A->C",
+    "A->G",
+    "A->T",
+    "C->A",
+    "C->G",
+    "C->T",
+    "G->A",
+    "G->C",
+    "G->T",
+    "T->A",
+    "T->C",
+    "T->G"
+  ],
+  "no_context_mut_types": [
+    "insertion",
+    "deletion"
+  ],
+  "spline_df": 30,
+  "n_rows": 41065,
+  "n_mutation_types": 14,
+  "overall_rate_rmse": 0.00013322362190559765,
+  "overall_wt_ppc_ratio": 0.9858575366026185
+}

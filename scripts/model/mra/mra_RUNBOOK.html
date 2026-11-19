@@ -1,0 +1,1028 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+  <meta charset="utf-8" />
+  <meta name="generator" content="pandoc 3.12.1" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes" />
+  <title>mra Mutation-Supply Model — Runbook</title>
+  <style>
+
+span.smallcaps{font-variant: small-caps;}
+div.columns{display: flex; gap: 1.5em;}
+div.column{flex: auto;}
+@media screen {
+div.columns{gap: min(4vw, 1.5em);}
+div.column{overflow-x: auto;}
+}
+div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+
+ul.task-list[class]{list-style: none;}
+ul.task-list li input[type="checkbox"] {
+font-size: inherit;
+width: 0.8em;
+margin: 0 0.8em 0.2em -1.6em;
+vertical-align: middle;
+}
+
+html { -webkit-text-size-adjust: 100%; }
+pre > code.sourceCode { white-space: pre; position: relative; }
+pre > code.sourceCode > span { display: inline-block; line-height: 1.25; }
+pre > code.sourceCode > span:empty { height: 1.2em; }
+.sourceCode { overflow: visible; }
+code.sourceCode > span { color: inherit; text-decoration: inherit; }
+div.sourceCode { margin: 1em 0; }
+pre.sourceCode { margin: 0; }
+@media screen {
+div.sourceCode { overflow: auto; }
+}
+@media print {
+pre > code.sourceCode { white-space: pre-wrap; }
+pre > code.sourceCode > span { text-indent: -5em; padding-left: 5em; }
+}
+pre.numberSource code
+{ counter-reset: source-line 0; }
+pre.numberSource code > span
+{ position: relative; left: -4em; counter-increment: source-line; }
+pre.numberSource code > span > a:first-child::before
+{ content: counter(source-line);
+position: relative; left: -1em; text-align: right; vertical-align: baseline;
+border: none; display: inline-block;
+-webkit-touch-callout: none; -webkit-user-select: none;
+-khtml-user-select: none; -moz-user-select: none;
+-ms-user-select: none; user-select: none;
+padding: 0 4px; width: 4em;
+color: #aaaaaa;
+}
+pre.numberSource { margin-left: 3em; border-left: 1px solid #aaaaaa; padding-left: 4px; }
+div.sourceCode
+{ }
+@media screen {
+pre > code.sourceCode > span > a:first-child::before { text-decoration: underline; }
+}
+code span.al { color: #ff0000; font-weight: bold; } 
+code span.an { color: #60a0b0; font-weight: bold; font-style: italic; } 
+code span.at { color: #7d9029; } 
+code span.bn { color: #40a070; } 
+code span.bu { color: #008000; } 
+code span.cf { color: #007020; font-weight: bold; } 
+code span.ch { color: #4070a0; } 
+code span.cn { color: #880000; } 
+code span.co { color: #60a0b0; font-style: italic; } 
+code span.cv { color: #60a0b0; font-weight: bold; font-style: italic; } 
+code span.do { color: #ba2121; font-style: italic; } 
+code span.dt { color: #902000; } 
+code span.dv { color: #40a070; } 
+code span.er { color: #ff0000; font-weight: bold; } 
+code span.ex { } 
+code span.fl { color: #40a070; } 
+code span.fu { color: #06287e; } 
+code span.im { color: #008000; font-weight: bold; } 
+code span.in { color: #60a0b0; font-weight: bold; font-style: italic; } 
+code span.kw { color: #007020; font-weight: bold; } 
+code span.op { color: #666666; } 
+code span.ot { color: #007020; } 
+code span.pp { color: #bc7a00; } 
+code span.sc { color: #4070a0; } 
+code span.ss { color: #bb6688; } 
+code span.st { color: #4070a0; } 
+code span.va { color: #19177c; } 
+code span.vs { color: #4070a0; } 
+code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } 
+</style>
+  <style type="text/css">html { font-size: 100%; }
+body {
+font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Helvetica, Arial, sans-serif;
+line-height: 1.55; color: #1b1b1b; max-width: 56rem;
+margin: 2rem auto; padding: 0 1.25rem;
+}
+h1, h2, h3, h4 { line-height: 1.25; margin-top: 2rem; }
+h1 { font-size: 1.9rem; border-bottom: 2px solid #ddd; padding-bottom: .3rem; }
+h2 { font-size: 1.4rem; border-bottom: 1px solid #eee; padding-bottom: .25rem; }
+h3 { font-size: 1.15rem; }
+code {
+font-family: "SF Mono", Menlo, Consolas, monospace; font-size: .88em;
+background: #f4f4f6; padding: .12em .35em; border-radius: 4px;
+}
+pre {
+background: #f4f4f6; padding: 1rem; border-radius: 6px; overflow-x: auto;
+border: 1px solid #e5e5e8;
+}
+pre code { background: none; padding: 0; }
+table { border-collapse: collapse; width: 100%; margin: 1rem 0; font-size: .92rem; }
+th, td { border: 1px solid #dcdce0; padding: .45rem .6rem; text-align: left; vertical-align: top; }
+th { background: #f0f0f3; }
+tr:nth-child(even) td { background: #fafafb; }
+blockquote {
+border-left: 4px solid #0b66c3; background: #f6f9fc; margin: 1.25rem 0;
+padding: .4rem 1.1rem; border-radius: 0 6px 6px 0;
+}
+blockquote table { margin: .3rem 0; }
+a { color: #0b66c3; text-decoration: none; }
+a:hover { text-decoration: underline; }
+#TOC { background: #fafafb; border: 1px solid #e5e5e8; border-radius: 6px; padding: .75rem 1.25rem; }
+#TOC ul { margin: .3rem 0; }
+</style>
+</head>
+<body>
+<header id="title-block-header">
+<h1 class="title">mra Mutation-Supply Model — Runbook</h1>
+</header>
+<nav id="TOC" role="doc-toc">
+<ul>
+<li><a href="#mra-mutation-supply-model--runbook" id="toc-mra-mutation-supply-model--runbook">mra Mutation-Supply Model —
+Runbook</a>
+<ul>
+<li><a href="#model-at-a-glance" id="toc-model-at-a-glance">Model at a
+glance</a></li>
+<li><a href="#1-reproducibility-model-everything-is-driven-by-two-csv-files" id="toc-1-reproducibility-model-everything-is-driven-by-two-csv-files">1.
+Reproducibility model: everything is driven by two CSV files</a>
+<ul>
+<li><a href="#11-production-run-settings-mra_run_productioncsv" id="toc-11-production-run-settings-mra_run_productioncsv">1.1 Production
+run settings (<code>mra_run_production.csv</code>)</a></li>
+<li><a href="#12-prior-specification-mra_priorscsv" id="toc-12-prior-specification-mra_priorscsv">1.2 Prior specification
+(<code>mra_priors.csv</code>)</a></li>
+</ul></li>
+<li><a href="#2-model-specification" id="toc-2-model-specification">2.
+Model specification</a></li>
+<li><a href="#3-data-flow" id="toc-3-data-flow">3. Data flow</a></li>
+<li><a href="#4-prerequisites" id="toc-4-prerequisites">4.
+Prerequisites</a></li>
+<li><a href="#5-step-by-step-reproducible-pipeline" id="toc-5-step-by-step-reproducible-pipeline">5. Step-by-step
+reproducible pipeline</a>
+<ul>
+<li><a href="#step-0--build-the-model-input-applies-the-per-rec-filter" id="toc-step-0--build-the-model-input-applies-the-per-rec-filter">Step 0
+— Build the model input (applies the per-REC filter)</a></li>
+<li><a href="#step-1--optional-prior-predictive-check" id="toc-step-1--optional-prior-predictive-check">Step 1 — (Optional)
+Prior predictive check</a></li>
+<li><a href="#step-2--test-fit-fast-smoke-test" id="toc-step-2--test-fit-fast-smoke-test">Step 2 — Test fit (fast smoke
+test)</a></li>
+<li><a href="#step-3--production-fit-the-paper-model" id="toc-step-3--production-fit-the-paper-model">Step 3 — Production fit
+(the paper model)</a></li>
+<li><a href="#step-4--post-fit-analysis-tables-ppc-position-profiles-figures" id="toc-step-4--post-fit-analysis-tables-ppc-position-profiles-figures">Step
+4 — Post-fit analysis (tables, PPC, position profiles, figures)</a></li>
+<li><a href="#step-5--prior-audit-prior-vs-posterior-sensitivity" id="toc-step-5--prior-audit-prior-vs-posterior-sensitivity">Step 5 —
+Prior audit (prior vs posterior sensitivity)</a></li>
+<li><a href="#step-6--calibration-diagnostics-optional" id="toc-step-6--calibration-diagnostics-optional">Step 6 — Calibration
+diagnostics (optional)</a></li>
+<li><a href="#step-7--build-the-bio_rate-table-optional" id="toc-step-7--build-the-bio_rate-table-optional">Step 7 — Build the
+bio_rate table (optional)</a></li>
+<li><a href="#step-8--amino-acid-supply-the-mutation-rate-atlas" id="toc-step-8--amino-acid-supply-the-mutation-rate-atlas">Step 8 —
+Amino-acid supply (the Mutation Rate Atlas)</a></li>
+<li><a href="#step-9--sliding-window-observed-vs-modeled-rate-figure-3" id="toc-step-9--sliding-window-observed-vs-modeled-rate-figure-3">Step 9
+— Sliding-window observed vs modeled rate (Figure 3)</a></li>
+<li><a href="#step-10--variant-supply-mature-protein-extraction-optional" id="toc-step-10--variant-supply-mature-protein-extraction-optional">Step
+10 — Variant supply (mature-protein extraction, optional)</a></li>
+</ul></li>
+<li><a href="#6-script-inventory" id="toc-6-script-inventory">6. Script
+inventory</a></li>
+<li><a href="#7-extended-data-mapping" id="toc-7-extended-data-mapping">7. Extended-data mapping</a></li>
+<li><a href="#8-reproducibility-checklist" id="toc-8-reproducibility-checklist">8. Reproducibility
+checklist</a></li>
+</ul></li>
+</ul>
+</nav>
+<h1 id="mra-mutation-supply-model--runbook">mra Mutation-Supply Model —
+Runbook</h1>
+<p><code>mra</code> is the paper&#39;s <strong>primary</strong>
+mutation-supply model: the Bayesian hierarchical model that estimates
+the per-site, per-mutation-type <strong>biological mutation
+rate</strong> (<code>bio_rate</code>) across the HIV-1 (NL4-3) genome
+while separating it from the technical error measured in matched
+error-control (ePCR) libraries. Its amino-acid-level output is the
+Mutation Rate Atlas (MRA).</p>
+<p>This runbook documents the final production model and the exact,
+reproducible commands that produce every output used in the paper. It is
+written to stand alone as an extended-data methods supplement.</p>
+<h2 id="model-at-a-glance">Model at a glance</h2>
+<blockquote>
+<table>
+<tbody>
+<tr>
+<td><strong>Purpose</strong></td>
+<td>Per-site, per-mutation-type biological mutation rate
+(<code>bio_rate</code>) across the HIV-1 NL4-3 genome, separated from
+technical error.</td>
+</tr>
+<tr>
+<td><strong>Identifier</strong></td>
+<td><code>mra_joint_control_wt_nb_ga2_sub1_ga3_sum0_bio_splines</code></td>
+</tr>
+<tr>
+<td><strong>Likelihood</strong></td>
+<td>Negative binomial; experimental (WT) and control (ePCR) arms fit
+jointly, with REC coverage as exposure.</td>
+</tr>
+<tr>
+<td><strong>Rate decomposition</strong></td>
+<td><code>WT = error + biological</code>; <code>control = error</code>.
+Released quantity: <code>bio_rate</code>.</td>
+</tr>
+<tr>
+<td><strong>Overdispersion</strong></td>
+<td>Separate per mutation type × arm (28 total).</td>
+</tr>
+<tr>
+<td><strong>Sequence context</strong></td>
+<td>G→A: 3′ dinucleotide → 13 levels (sparse <code>CC/CG/TC/TT</code>
+pooled to <code>OTHER</code>). Other substitutions: 3′ single base
+(cells with &lt;20 WT counts pooled to type-only). Indels: none.</td>
+</tr>
+<tr>
+<td><strong>Position effect</strong></td>
+<td>6 cubic B-spline (df 30), <strong>sum-to-zero</strong>: G→A AA, G→A
+GA, G→A SHARED, non-G→A shared, insertion, deletion. On the biological
+arm only.</td>
+</tr>
+<tr>
+<td><strong>WT-only (error = 0)</strong></td>
+<td><code>C→A</code>, <code>G→T</code> (oxidative-damage control
+artefact), <code>deletion</code> (sparse control) — biological rates are
+upper bounds.</td>
+</tr>
+<tr>
+<td><strong>Priors</strong></td>
+<td>Explicit, weakly informative (not transferred): bio log-rates
+<code>Normal(log 1e-5, 2.0)</code>, error
+<code>Normal(log 1e-6, 1.5)</code>, HalfNormal spreads/amplitudes,
+Exponential dispersion. Full set in <code>mra_priors.csv</code>.</td>
+</tr>
+<tr>
+<td><strong>Sampling</strong></td>
+<td>PyMC NUTS, 4 chains × 2000 draws (6000 tune),
+<code>target_accept = 0.98</code>, seed 42.</td>
+</tr>
+<tr>
+<td><strong>Data</strong></td>
+<td>Libraries LP249/252/253 (NL4-3); RECs ≤1000 mutations; 20-bp edge
+trim; 8,213 positions × 5 = 41,065 observations.</td>
+</tr>
+<tr>
+<td><strong>Configuration</strong></td>
+<td><code>data/models/mra/mra_run_production.csv</code> (settings) +
+<code>mra_priors.csv</code> (priors).</td>
+</tr>
+<tr>
+<td><strong>Final outputs</strong></td>
+<td><code>data/models/mra/production/</code> (fit) and
+<code>.../comprehensive_analysis_mra_product/</code> (amino-acid
+atlas).</td>
+</tr>
+</tbody>
+</table>
+</blockquote>
+<p>Final model identifier (recorded in every fit&#39;s
+<code>model_metadata.json</code>):</p>
+<pre><code>mra_joint_control_wt_nb_ga2_sub1_ga3_sum0_bio_splines</code></pre>
+<p>The <code>sum0</code> token marks the key feature of the final model:
+every biological position spline is <strong>sum-to-zero
+constrained</strong> (see <a href="#model-specification">Model
+specification</a>).</p>
+<p>All paths below are relative to the repository root
+<code>MutRatePaper/</code>. Scripts resolve this automatically via
+<code>PROJECT_ROOT = Path(__file__).resolve().parents[3]</code>, so no
+machine-specific paths are hard-coded. Commands are shown run from
+<code>scripts/model/mra/</code>.</p>
+<hr />
+<h2 id="1-reproducibility-model-everything-is-driven-by-two-csv-files">1.
+Reproducibility model: everything is driven by two CSV files</h2>
+<p>The entire fit is defined by two plain-text configuration files under
+<code>data/models/mra/</code>. Nothing about the model is hard-coded in
+the scripts; to reproduce or alter the fit you edit these files, not the
+Python.</p>
+<table>
+<thead>
+<tr>
+<th>File</th>
+<th>Role</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>mra_run_production.csv</code></td>
+<td>All <strong>non-prior</strong> run settings (sampling, model
+structure, spline regularisers, data filters). Used by both the input
+builder and the fit.</td>
+</tr>
+<tr>
+<td><code>mra_run_test.csv</code></td>
+<td>Same schema, reduced sampling for a fast smoke test.</td>
+</tr>
+<tr>
+<td><code>mra_priors.csv</code></td>
+<td>The <strong>complete prior specification</strong>: one row per
+sampled parameter, with family, location, and scale.</td>
+</tr>
+</tbody>
+</table>
+<p>Both loaders are tiny and auditable:</p>
+<ul>
+<li><code>mra_run.py</code> → <code>RunConfig</code>: reads
+<code>mra_run_*.csv</code> (columns <code>parameter,value,type</code>),
+type-casts each value, and refuses duplicate keys.</li>
+<li><code>mra_priors.py</code> → <code>FilePriors</code>: reads
+<code>mra_priors.csv</code> (columns
+<code>parameter,family,location,scale</code>), and serves
+<code>Normal</code>, <code>HalfNormal</code>, and
+<code>Exponential</code> priors to the model by exact parameter name. A
+mismatch between the family the model requests and the family in the
+file is a hard error, so the fitted model can never silently diverge
+from the documented priors.</li>
+</ul>
+<p>A fixed <code>random_seed</code> (42) makes the fit deterministic
+given the same inputs and configuration.</p>
+<h3 id="11-production-run-settings-mra_run_productioncsv">1.1 Production
+run settings (<code>mra_run_production.csv</code>)</h3>
+<p>These are the exact values used for the paper fit.</p>
+<table>
+<thead>
+<tr>
+<th>parameter</th>
+<th>value</th>
+<th>group</th>
+<th>meaning</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>random_seed</code></td>
+<td><code>42</code></td>
+<td>sampling</td>
+<td>Fixed seed for a reproducible fit.</td>
+</tr>
+<tr>
+<td><code>chains</code></td>
+<td><code>4</code></td>
+<td>sampling</td>
+<td>NUTS chains.</td>
+</tr>
+<tr>
+<td><code>cores</code></td>
+<td><code>4</code></td>
+<td>sampling</td>
+<td>Parallel sampling workers.</td>
+</tr>
+<tr>
+<td><code>draws</code></td>
+<td><code>2000</code></td>
+<td>sampling</td>
+<td>Retained draws per chain (8,000 total).</td>
+</tr>
+<tr>
+<td><code>tune</code></td>
+<td><code>6000</code></td>
+<td>sampling</td>
+<td>Warm-up iterations per chain.</td>
+</tr>
+<tr>
+<td><code>target_accept</code></td>
+<td><code>0.98</code></td>
+<td>sampling</td>
+<td>NUTS target acceptance probability.</td>
+</tr>
+<tr>
+<td><code>context_mode</code></td>
+<td><code>mixed_ga2_else1</code></td>
+<td>structure</td>
+<td>G→A uses the 3′ dinucleotide; other substitutions use the 3′ single
+base.</td>
+</tr>
+<tr>
+<td><code>context_n</code></td>
+<td><code>3</code></td>
+<td>structure</td>
+<td>Length of the flanking-context string read from the input
+table.</td>
+</tr>
+<tr>
+<td><code>min_context_count</code></td>
+<td><code>0</code></td>
+<td>structure</td>
+<td>No rarity drop at this stage (G→A pooling handled separately).</td>
+</tr>
+<tr>
+<td><code>min_sub_context_wt_count</code></td>
+<td><code>20</code></td>
+<td>structure</td>
+<td>Non-G→A type×base cells with <code>&lt; 20</code> WT counts are
+pooled to the type-level effect.</td>
+</tr>
+<tr>
+<td><code>drop_indels</code></td>
+<td><code>0</code></td>
+<td>structure</td>
+<td>Keep insertions and deletions.</td>
+</tr>
+<tr>
+<td><code>include_position_bio</code></td>
+<td><code>1</code></td>
+<td>structure</td>
+<td>Fit the six biological position splines.</td>
+</tr>
+<tr>
+<td><code>include_position_err</code></td>
+<td><code>0</code></td>
+<td>structure</td>
+<td>No positional spline on the error arm.</td>
+</tr>
+<tr>
+<td><code>spline_df</code></td>
+<td><code>30</code></td>
+<td>structure</td>
+<td>Cubic B-spline basis (31 functions; 30 free under sum-to-zero).</td>
+</tr>
+<tr>
+<td><code>ga_pool_2mers</code></td>
+<td><code>CC,CG,TC,TT</code></td>
+<td>structure</td>
+<td>Sparse G→A 3′ dinucleotides pooled into <code>OTHER</code>.</td>
+</tr>
+<tr>
+<td><code>wt_only_mut_types</code></td>
+<td><code>C-&gt;A,G-&gt;T,deletion</code></td>
+<td>structure</td>
+<td>Types fit WT-only (no control arm).</td>
+</tr>
+<tr>
+<td><code>spline_sigma_floor</code></td>
+<td><code>0.1</code></td>
+<td>spline</td>
+<td>Additive floor on each spline amplitude
+(<code>σ = floor + HalfNormal</code>).</td>
+</tr>
+<tr>
+<td><code>spline_sum_to_zero</code></td>
+<td><code>1</code></td>
+<td>spline</td>
+<td>Hard sum-to-zero on each bio P-spline.</td>
+</tr>
+<tr>
+<td><code>spline_smoothness_scale</code></td>
+<td><code>0.25</code></td>
+<td>spline</td>
+<td>Roughness penalty for non-G→A substitution and indel splines.</td>
+</tr>
+<tr>
+<td><code>spline_smoothness_scale_ga_aa</code></td>
+<td><code>0.08</code></td>
+<td>spline</td>
+<td>Weaker penalty for the G→A <strong>AA</strong> spline.</td>
+</tr>
+<tr>
+<td><code>spline_smoothness_scale_ga_non_aa</code></td>
+<td><code>0.18</code></td>
+<td>spline</td>
+<td>Stronger penalty for the G→A <strong>GA</strong> and
+<strong>SHARED</strong> splines.</td>
+</tr>
+<tr>
+<td><code>max_muts_per_rec</code></td>
+<td><code>1000</code></td>
+<td>data</td>
+<td>Keep consensus molecules (RECs) with ≤ this many mutations.</td>
+</tr>
+<tr>
+<td><code>edge_trim</code></td>
+<td><code>20</code></td>
+<td>data</td>
+<td>Trim this many bases from each end of each library amplicon.</td>
+</tr>
+<tr>
+<td><code>wt_groups</code></td>
+<td><code>WT,NEG,Sparsomycin,pUC19</code></td>
+<td>data</td>
+<td>Sample-name groups pooled into the mutation-supply (experimental)
+class.</td>
+</tr>
+<tr>
+<td><code>control_groups</code></td>
+<td><code>ePCR</code></td>
+<td>data</td>
+<td>Sample-name groups pooled into the error-control class.</td>
+</tr>
+<tr>
+<td><code>context_k</code></td>
+<td><code>5</code></td>
+<td>data</td>
+<td>Flanking bases stored in
+<code>five_prime</code>/<code>three_prime</code> when the input table is
+built.</td>
+</tr>
+</tbody>
+</table>
+<p>Each row also carries an <code>env_var</code> and
+<code>rationale</code> column; the <code>env_var</code> names are legacy
+overrides and are <strong>not</strong> consulted when a
+<code>--run</code> file is supplied.</p>
+<h3 id="12-prior-specification-mra_priorscsv">1.2 Prior specification
+(<code>mra_priors.csv</code>)</h3>
+<p>The final model uses explicit, weakly-informative priors anchored on
+round order-of-magnitude rates — <strong>not</strong>
+empirically-centred or transfer priors
+(<code>use_transfer_priors = false</code>). Centres are deliberately
+generic so the data, not the prior, determines each rate. The file
+contains one row per sampled scalar; the distinct priors are:</p>
+<table>
+<thead>
+<tr>
+<th>Prior group</th>
+<th style="text-align: right;">n params</th>
+<th>Family</th>
+<th>Location</th>
+<th>Scale</th>
+<th>Applies to</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>bio_log_rate</code></td>
+<td style="text-align: right;">25</td>
+<td>Normal</td>
+<td><code>log(1e-5) = -11.513</code></td>
+<td><code>2.0</code></td>
+<td>Global bio intercept, the 11 per-type substitution effects, and all
+13 G→A context intercepts (same prior for every biological
+log-rate).</td>
+</tr>
+<tr>
+<td><code>error_intercept</code></td>
+<td style="text-align: right;">1</td>
+<td>Normal</td>
+<td><code>log(1e-6) = -13.816</code></td>
+<td><code>1.5</code></td>
+<td>Technical error-rate intercept.</td>
+</tr>
+<tr>
+<td><code>bio_type_spread</code></td>
+<td style="text-align: right;">1</td>
+<td>HalfNormal</td>
+<td>—</td>
+<td><code>1.0</code></td>
+<td>SD of the indel type effects around the shared intercept.</td>
+</tr>
+<tr>
+<td><code>error_type_spread</code></td>
+<td style="text-align: right;">1</td>
+<td>HalfNormal</td>
+<td>—</td>
+<td><code>1.0</code></td>
+<td>SD of per-type error effects.</td>
+</tr>
+<tr>
+<td><code>context_spread</code></td>
+<td style="text-align: right;">1</td>
+<td>HalfNormal</td>
+<td>—</td>
+<td><code>0.5</code></td>
+<td>SD of 3′ single-base context deviations (half the type spread, so
+context modulates but does not redefine a type).</td>
+</tr>
+<tr>
+<td><code>spline_amplitude</code></td>
+<td style="text-align: right;">6</td>
+<td>HalfNormal</td>
+<td>—</td>
+<td><code>0.75</code></td>
+<td>Amplitude (σ) of each of the six bio splines.</td>
+</tr>
+<tr>
+<td><code>spline_shape</code></td>
+<td style="text-align: right;">180</td>
+<td>Normal</td>
+<td><code>0</code></td>
+<td><code>1</code></td>
+<td>Standardised spline coefficients (6 splines × 30 free).</td>
+</tr>
+<tr>
+<td><code>unit_normal</code></td>
+<td style="text-align: right;">72</td>
+<td>Normal</td>
+<td><code>0</code></td>
+<td><code>1</code></td>
+<td>Non-centred auxiliaries for type/context effects
+(<code>effect = z·σ</code>).</td>
+</tr>
+<tr>
+<td><code>dispersion</code></td>
+<td style="text-align: right;">28</td>
+<td>Exponential</td>
+<td>—</td>
+<td><code>1.0</code></td>
+<td>Negative-binomial overdispersion, one per mutation type × arm
+(WT/control).</td>
+</tr>
+</tbody>
+</table>
+<p>Choosing and sanity-checking these priors is itself scripted and
+reproducible:</p>
+<ul>
+<li><code>mra_prior_predictive.py</code> — simulates data from the prior
+<strong>without fitting</strong> and checks that the prior predictive
+brackets the observed data (contains it, is wider than it by orders of
+magnitude, and is not absurd). This is how the prior scales were set
+before running PyMC.</li>
+<li><code>mra_prior_audit.py</code> — after a fit, reconstructs each
+parameter&#39;s prior and compares it to the posterior (prior/posterior
+contraction and z-shift), to confirm the posterior is data-driven rather
+than prior-driven.</li>
+</ul>
+<hr />
+<h2 id="2-model-specification">2. Model specification</h2>
+<p>For every genome position <code>i</code> and mutation type
+<code>t(i)</code>, the observed control and experimental (WT) mutation
+counts are modelled as negative-binomial draws with the number of
+consensus molecules (RECs) as exposure:</p>
+<pre><code>c_i ~ NB( E_i^c · λ_i^err ,            α_{t(i)}^c )      # control arm
+e_i ~ NB( E_i^e · (λ_i^err + λ_i^bio), α_{t(i)}^e )      # experimental arm</code></pre>
+<ul>
+<li><code>E_i^c</code>, <code>E_i^e</code> — control / experimental REC
+coverage at the site (exposure).</li>
+<li><code>λ_i^err</code> — technical error rate; <code>λ_i^bio</code> —
+biological mutation rate (the released quantity,
+<code>bio_rate</code>).</li>
+<li><code>α^c</code>, <code>α^e</code> — separate overdispersion
+parameters per mutation type and arm (28 total; <code>dispersion</code>
+prior).</li>
+</ul>
+<p><strong>Rate structure (log scale).</strong></p>
+<ul>
+<li><code>log λ^bio = type effect + 3′-context effect + biological position spline</code></li>
+<li><code>log λ^err = intercept + per-type effect</code> (no context, no
+positional spline)</li>
+</ul>
+<p><strong>Sequence context (<code>mixed_ga2_else1</code>).</strong></p>
+<ul>
+<li><strong>G→A</strong>: 3′ <strong>dinucleotide</strong> (the two
+bases immediately 3′ of the mutated G, i.e. the <code>NN</code> in a
+<code>G·NN</code> motif). The four sparsest dinucleotides
+(<code>CC, CG, TC, TT</code>) are pooled into a single
+<code>OTHER</code> level, giving <strong>13</strong> G→A context levels,
+each with its own intercept.</li>
+<li><strong>All other substitutions</strong>: 3′ <strong>single
+base</strong> (<code>A/C/G/T</code>). A type×base cell with
+<code>&lt; 20</code> WT observations is pooled back to a type-only
+effect.</li>
+<li><strong>Insertions and deletions</strong>: no sequence context.</li>
+</ul>
+<p><strong>Six biological position splines (cubic B-spline, df = 30,
+sum-to-zero).</strong> Positions are standardised before basis
+construction. Each spline samples <code>n_basis − 1 = 30</code> free
+coefficients and sets the last to <code>−Σ(free)</code>, so the spline
+is mean-zero across the genome and the intercept owns the overall level
+(&quot;amplitude owns only shape&quot;). Smoothness is imposed by a roughness
+penalty on second differences, with context-specific weights.</p>
+<table>
+<thead>
+<tr>
+<th>Spline</th>
+<th>Applies to</th>
+<th>Smoothness weight</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>G→A AA</td>
+<td>G→A, <code>AA</code> 2-mer</td>
+<td><code>0.08</code></td>
+</tr>
+<tr>
+<td>G→A GA</td>
+<td>G→A, <code>GA</code> 2-mer</td>
+<td><code>0.18</code></td>
+</tr>
+<tr>
+<td>G→A SHARED</td>
+<td>all other G→A 2-mers (incl. the pooled <code>OTHER</code>)</td>
+<td><code>0.18</code></td>
+</tr>
+<tr>
+<td>non-G→A shared</td>
+<td>all non-G→A substitutions</td>
+<td><code>0.25</code></td>
+</tr>
+<tr>
+<td>insertion</td>
+<td>insertions</td>
+<td><code>0.25</code></td>
+</tr>
+<tr>
+<td>deletion</td>
+<td>deletions</td>
+<td><code>0.25</code></td>
+</tr>
+</tbody>
+</table>
+<p><strong>WT-only correction.</strong> For <code>C→A</code>,
+<code>G→T</code>, and <code>deletion</code> the control arm is omitted
+and <code>λ^err = 0</code>:</p>
+<ul>
+<li><code>C→A</code> / <code>G→T</code>: oxidative-damage (8-oxo-G)
+artefacts inflate these in the directly-sequenced plasmid control but
+are repaired after transfection.</li>
+<li><code>deletion</code>: control counts are too sparse to be
+informative.</li>
+</ul>
+<p>Consequently the biological estimates for these three types are an
+<strong>upper bound</strong> on the true rate, and the inflated control
+counts cannot contaminate the error term.</p>
+<hr />
+<h2 id="3-data-flow">3. Data flow</h2>
+<pre><code>data/pipeline/10-mutation_analysis_.../all_mutations.csv            ┐
+data/pipeline/10-mutation_analysis_.../consensus_sequence_data.csv  ├─▶ mra_build_model_input.py --run
+data/pipeline/00-reference-map/{LP###.csv, *.yaml}                  ┘   (applies per-REC filter + edge trim)
+                                                                         │
+                                       data/models/mra/mutation_supply_data.csv
+                                       data/models/mra/mutation_supply_data.build_metadata.json
+                                                                         │
+            mra_MutationSupplyPymc_production_joint_WT_control.py --priors --run --outdir
+                                                                         ▼
+                      &lt;OUTDIR&gt;/  (idata.nc, ppc.nc, model_metadata.json, posterior_summary.csv, …)
+                                                                         │
+         postfit ─▶ prior-audit ─▶ diagnostics ─▶ build-table ─▶ comprehensive (AA/MRA) ─▶ sliding-window ─▶ variant-supply</code></pre>
+<p>The paper&#39;s final fit lives in
+<code>data/models/mra/production/</code>, which is also the scripts&#39;
+default output directory, so <code>--outdir</code> /
+<code>MUT_SUPPLY_OUTDIR</code> can be omitted to reproduce into it (they
+are shown explicitly below for clarity).</p>
+<hr />
+<h2 id="4-prerequisites">4. Prerequisites</h2>
+<ul>
+<li>Conda environment <code>pymc_env</code> with PyMC (paper used
+<strong>PyMC 5.26.1</strong>), ArviZ, PyTensor, NumPy, pandas, patsy,
+PyYAML, matplotlib. The exact environment is exported under
+<code>env/</code> — recreate it with
+<code>conda env create -n pymc_env -f env/pymc_env.from-history.yml</code>
+(portable) or <code>env/pymc_env.no-builds.yml</code> /
+<code>env/pymc_env.full.yml</code> for stricter pinning; see
+<code>env/README.md</code>.</li>
+<li>Pipeline step-10 outputs present under
+<code>data/pipeline/10-mutation_analysis_ERRSeq-PAPER-SAMPLES/</code>
+(<code>all_mutations.csv</code>,
+<code>consensus_sequence_data.csv</code>).</li>
+<li>Reference map under <code>data/pipeline/00-reference-map/</code>
+(per-library <code>LP###.csv</code> and
+<code>library_to_biological_reference.yaml</code>); reference strain
+<code>NL43</code>; libraries <code>LP249</code>, <code>LP252</code>,
+<code>LP253</code>.</li>
+<li>Gene annotation
+<code>data/mutation_supply/annotation/NL43/NL43_protein_codons.csv</code>
+(9 HIV-1 proteins) for the amino-acid atlas (Step 8).</li>
+</ul>
+<div class="sourceCode" id="cb4"><pre class="sourceCode bash"><code class="sourceCode bash"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a><span class="ex">conda</span> activate pymc_env</span>
+<span id="cb4-2"><a href="#cb4-2" aria-hidden="true" tabindex="-1"></a><span class="bu">cd</span> scripts/model/mra</span></code></pre></div>
+<hr />
+<h2 id="5-step-by-step-reproducible-pipeline">5. Step-by-step
+reproducible pipeline</h2>
+<p>Every step below is a single command. Steps 0, 2, and 3 are required
+to reproduce the fit; the rest reproduce the published analyses and
+tables.</p>
+<h3 id="step-0--build-the-model-input-applies-the-per-rec-filter">Step 0
+— Build the model input (applies the per-REC filter)</h3>
+<p>The only place per-REC quality filtering happens. Reads the
+<code>--run</code> file for <code>max_muts_per_rec</code>,
+<code>edge_trim</code>, <code>context_k</code>, <code>wt_groups</code>,
+and <code>control_groups</code>.</p>
+<div class="sourceCode" id="cb5"><pre class="sourceCode bash"><code class="sourceCode bash"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a><span class="ex">python3</span> mra_build_model_input.py <span class="at">--run</span> ../../../data/models/mra/mra_run_production.csv</span></code></pre></div>
+<p>Outputs:</p>
+<ul>
+<li><code>data/models/mra/mutation_supply_data.csv</code> — one row per
+(position × mutation type):
+<code>ref_position, Mut_Type, WT_mutation_count, Control_mutation_count, WT_coverage, Control_coverage, ref_nucleotide, five_prime, three_prime</code>.</li>
+<li><code>data/models/mra/mutation_supply_data.build_metadata.json</code>
+— filter stats (RECs considered/kept/dropped, covered positions, output
+rows).</li>
+</ul>
+<p>RECs with <code>Total_Mutations &gt; max_muts_per_rec</code> are
+dropped from <strong>both</strong> the mutation numerator and the
+coverage denominator so per-site rates stay internally consistent. (At
+the paper threshold of 1000, 0 of 60,677 RECs were dropped.)</p>
+<h3 id="step-1--optional-prior-predictive-check">Step 1 — (Optional)
+Prior predictive check</h3>
+<p>Confirms the prior brackets reality before any fitting.</p>
+<div class="sourceCode" id="cb6"><pre class="sourceCode bash"><code class="sourceCode bash"><span id="cb6-1"><a href="#cb6-1" aria-hidden="true" tabindex="-1"></a><span class="ex">python3</span> mra_prior_predictive.py                 <span class="co"># default candidate spec</span></span>
+<span id="cb6-2"><a href="#cb6-2" aria-hidden="true" tabindex="-1"></a><span class="ex">python3</span> mra_prior_predictive.py <span class="at">--dump-spec</span>      <span class="co"># print the spec as JSON</span></span></code></pre></div>
+<h3 id="step-2--test-fit-fast-smoke-test">Step 2 — Test fit (fast smoke
+test)</h3>
+<p>Verifies the model compiles and samples using
+<code>mra_run_test.csv</code> (1 chain, 50 draws/tune).</p>
+<div class="sourceCode" id="cb7"><pre class="sourceCode bash"><code class="sourceCode bash"><span id="cb7-1"><a href="#cb7-1" aria-hidden="true" tabindex="-1"></a><span class="ex">python3</span> mra_MutationSupplyPymc_production_joint_WT_control.py <span class="dt">\</span></span>
+<span id="cb7-2"><a href="#cb7-2" aria-hidden="true" tabindex="-1"></a>  <span class="at">--priors</span> ../../../data/models/mra/mra_priors.csv <span class="dt">\</span></span>
+<span id="cb7-3"><a href="#cb7-3" aria-hidden="true" tabindex="-1"></a>  <span class="at">--run</span>    ../../../data/models/mra/mra_run_test.csv <span class="dt">\</span></span>
+<span id="cb7-4"><a href="#cb7-4" aria-hidden="true" tabindex="-1"></a>  <span class="at">--outdir</span> ../../../data/models/mra/production_test</span></code></pre></div>
+<h3 id="step-3--production-fit-the-paper-model">Step 3 — Production fit
+(the paper model)</h3>
+<div class="sourceCode" id="cb8"><pre class="sourceCode bash"><code class="sourceCode bash"><span id="cb8-1"><a href="#cb8-1" aria-hidden="true" tabindex="-1"></a><span class="ex">python3</span> mra_MutationSupplyPymc_production_joint_WT_control.py <span class="dt">\</span></span>
+<span id="cb8-2"><a href="#cb8-2" aria-hidden="true" tabindex="-1"></a>  <span class="at">--priors</span> ../../../data/models/mra/mra_priors.csv <span class="dt">\</span></span>
+<span id="cb8-3"><a href="#cb8-3" aria-hidden="true" tabindex="-1"></a>  <span class="at">--run</span>    ../../../data/models/mra/mra_run_production.csv <span class="dt">\</span></span>
+<span id="cb8-4"><a href="#cb8-4" aria-hidden="true" tabindex="-1"></a>  <span class="at">--outdir</span> ../../../data/models/mra/production</span></code></pre></div>
+<p><code>--priors</code> and <code>--run</code> are
+<strong>required</strong>; <code>--data</code> and <code>--outdir</code>
+default to <code>data/models/mra/mutation_supply_data.csv</code> and
+<code>data/models/mra/production</code> respectively (or set
+<code>MUT_SUPPLY_DATA_PATH</code> / <code>MUT_SUPPLY_OUTDIR</code>).</p>
+<p>Key outputs in <code>&lt;OUTDIR&gt;</code>:</p>
+<ul>
+<li><code>idata.nc</code> — full posterior (InferenceData).</li>
+<li><code>ppc.nc</code> — posterior predictive samples.</li>
+<li><code>model_metadata.json</code> — complete, self-describing record
+of the fit: resolved <code>run_settings</code>, the
+<code>prior_unique</code> summary, context levels, spline rules, base
+rates, and observation counts.</li>
+<li><code>posterior_summary.csv</code>,
+<code>posterior_diagnostics.csv</code> — parameter summaries, R-hat,
+ESS.</li>
+</ul>
+<p>For the rest of the pipeline, point the environment at this directory
+once:</p>
+<div class="sourceCode" id="cb9"><pre class="sourceCode bash"><code class="sourceCode bash"><span id="cb9-1"><a href="#cb9-1" aria-hidden="true" tabindex="-1"></a><span class="bu">export</span> <span class="va">MUT_SUPPLY_OUTDIR</span><span class="op">=</span><span class="st">&quot;</span><span class="va">$(</span><span class="bu">cd</span> ../../../data/models/mra/production <span class="kw">&amp;&amp;</span> <span class="bu">pwd</span><span class="va">)</span><span class="st">&quot;</span></span></code></pre></div>
+<h3 id="step-4--post-fit-analysis-tables-ppc-position-profiles-figures">Step
+4 — Post-fit analysis (tables, PPC, position profiles, figures)</h3>
+<div class="sourceCode" id="cb10"><pre class="sourceCode bash"><code class="sourceCode bash"><span id="cb10-1"><a href="#cb10-1" aria-hidden="true" tabindex="-1"></a><span class="ex">python3</span> mra_MutationSupplyPymc_postfit_analysis.py</span></code></pre></div>
+<p>Writes to <code>$MUT_SUPPLY_OUTDIR</code>:</p>
+<ul>
+<li><code>FINAL_mutation_supply_dataset.csv</code> — per-site posterior
+<code>bio_rate</code> (median + 95% interval), error rate, and inputs;
+the atlas&#39;s nucleotide-level source table.</li>
+<li><code>postfit_ppc_wt_by_mutation_type.csv</code>,
+<code>postfit_ppc_control_corrected_types.csv</code>,
+<code>postfit_ppc_by_mutation_type.csv</code> — observed vs predicted
+counts per type.</li>
+<li><code>postfit_r2_by_mutation_type.csv</code>,
+<code>postfit_mutation_spectrum.csv</code>,
+<code>postfit_context_summary.csv</code>.</li>
+<li><code>postfit_position_profile_{GtoA_AA,GtoA_GA,GtoA_SHARED,shared_sub,insertion,deletion}.csv</code>
+— fitted spline profiles.</li>
+<li><code>postfit_model_checklist.txt</code>, <code>loo_wt.txt</code>,
+<code>waic_wt.txt</code>.</li>
+<li><code>figures/</code> — <code>ppc_*</code>,
+<code>mutation_spectrum_*</code>, <code>context_bio_supply_GtoA</code>,
+<code>position_bio_rate_*</code>.</li>
+</ul>
+<h3 id="step-5--prior-audit-prior-vs-posterior-sensitivity">Step 5 —
+Prior audit (prior vs posterior sensitivity)</h3>
+<div class="sourceCode" id="cb11"><pre class="sourceCode bash"><code class="sourceCode bash"><span id="cb11-1"><a href="#cb11-1" aria-hidden="true" tabindex="-1"></a><span class="ex">python3</span> mra_prior_audit.py <span class="st">&quot;</span><span class="va">$MUT_SUPPLY_OUTDIR</span><span class="st">&quot;</span> <span class="at">-o</span> <span class="st">&quot;</span><span class="va">$MUT_SUPPLY_OUTDIR</span><span class="st">/prior_audit.csv&quot;</span></span></code></pre></div>
+<p>Reports per-parameter contraction <code>1 − (σ_post/σ_prior)²</code>
+and <code>z = (μ_post − μ_prior)/σ_prior</code>. High contraction /
+large |z| ⇒ data-driven.</p>
+<h3 id="step-6--calibration-diagnostics-optional">Step 6 — Calibration
+diagnostics (optional)</h3>
+<div class="sourceCode" id="cb12"><pre class="sourceCode bash"><code class="sourceCode bash"><span id="cb12-1"><a href="#cb12-1" aria-hidden="true" tabindex="-1"></a><span class="ex">python3</span> mra-PostFitDiagnostics.py <span class="at">--model-output-dir</span> <span class="st">&quot;</span><span class="va">$MUT_SUPPLY_OUTDIR</span><span class="st">&quot;</span></span></code></pre></div>
+<h3 id="step-7--build-the-bio_rate-table-optional">Step 7 — Build the
+bio_rate table (optional)</h3>
+<div class="sourceCode" id="cb13"><pre class="sourceCode bash"><code class="sourceCode bash"><span id="cb13-1"><a href="#cb13-1" aria-hidden="true" tabindex="-1"></a><span class="ex">python3</span> mra-BuildMutationSupplyTable.py <span class="dt">\</span></span>
+<span id="cb13-2"><a href="#cb13-2" aria-hidden="true" tabindex="-1"></a>  <span class="at">--input-data</span> ../../../data/models/mra/mutation_supply_data.csv <span class="dt">\</span></span>
+<span id="cb13-3"><a href="#cb13-3" aria-hidden="true" tabindex="-1"></a>  <span class="at">--supply-csv</span> <span class="st">&quot;</span><span class="va">$MUT_SUPPLY_OUTDIR</span><span class="st">/mutation_supply_site_mutation_table.csv&quot;</span> <span class="dt">\</span></span>
+<span id="cb13-4"><a href="#cb13-4" aria-hidden="true" tabindex="-1"></a>  <span class="at">--out-csv</span>    <span class="st">&quot;</span><span class="va">$MUT_SUPPLY_OUTDIR</span><span class="st">/mutation_supply_bio_rate_table.csv&quot;</span></span></code></pre></div>
+<h3 id="step-8--amino-acid-supply-the-mutation-rate-atlas">Step 8 —
+Amino-acid supply (the Mutation Rate Atlas)</h3>
+<p>Converts the per-site posterior into amino-acid-coded supply. Reads
+<code>FINAL_mutation_supply_dataset.csv</code>, enumerates every
+mutant-codon path per codon, translates via the genetic code, and sums
+path rates (product of per-site <code>bio_rate_median</code> along a
+path) to <code>(protein, AA position, alt_aa)</code>.</p>
+<div class="sourceCode" id="cb14"><pre class="sourceCode bash"><code class="sourceCode bash"><span id="cb14-1"><a href="#cb14-1" aria-hidden="true" tabindex="-1"></a><span class="ex">python3</span> mra_comprehensive_mutation_supply_analysis.py</span></code></pre></div>
+<p>Outputs to
+<code>$MUT_SUPPLY_OUTDIR/comprehensive_analysis_mra_product/</code>:</p>
+<ul>
+<li><code>site_level_supply_table.csv</code>,
+<code>aa_mutation_path_table.csv</code>,
+<code>aa_level_supply_table.csv</code> (with <code>mu_aa</code>,
+<code>mu_aa_lo95</code>, <code>mu_aa_hi95</code>),
+<code>aa_mutation_entropy.csv</code>.</li>
+<li><code>module1</code>–<code>module5</code> tables (variance
+decomposition, within/between-AA, etc.),
+<code>robustness_bootstrap_site_summary.csv</code>,
+<code>analysis_run_metadata.csv</code>,
+<code>aa_level_supply_ci_methodology.txt</code>, and figures.</li>
+</ul>
+<p><strong>Gene-aware annotation is required</strong> for the published
+atlas: the enumeration uses
+<code>data/mutation_supply/annotation/NL43/NL43_protein_codons.csv</code>
+(9 proteins). Confirm
+<code>codon_annotation_mode = gene_annotated</code> and
+<code>n_proteins_annotated = 9</code> in
+<code>analysis_run_metadata.csv</code>; otherwise it silently falls back
+to a single <code>GENOME</code> frame (<code>frame_inferred</code>),
+which does <strong>not</strong> match the paper. Override with
+<code>--protein-codons-file</code> if needed.</p>
+<h3 id="step-9--sliding-window-observed-vs-modeled-rate-figure-3">Step 9
+— Sliding-window observed vs modeled rate (Figure 3)</h3>
+<div class="sourceCode" id="cb15"><pre class="sourceCode bash"><code class="sourceCode bash"><span id="cb15-1"><a href="#cb15-1" aria-hidden="true" tabindex="-1"></a><span class="ex">python3</span> mra_sliding_window_observed_vs_bio.py</span></code></pre></div>
+<p>Outputs to <code>$MUT_SUPPLY_OUTDIR/sliding_window_analysis/</code>:
+<code>sliding_window_observed_vs_bio_rate_{100bp_step10,150bp_step10,250bp_step25}.csv</code>,
+<code>sliding_window_correlation_stats_*.csv</code> (Pearson r of
+observed vs modeled),
+<code>sliding_window_analysis_metadata.json</code>, and linear/log10
+figures. Observed rate = <code>Σwt/Σwt_cov − Σctrl/Σctrl_cov</code>;
+modeled rate = <code>bio_rate_median − error_rate_median</code> (net
+biological supply).</p>
+<h3 id="step-10--variant-supply-mature-protein-extraction-optional">Step
+10 — Variant supply (mature-protein extraction, optional)</h3>
+<div class="sourceCode" id="cb16"><pre class="sourceCode bash"><code class="sourceCode bash"><span id="cb16-1"><a href="#cb16-1" aria-hidden="true" tabindex="-1"></a><span class="ex">python3</span> mra_build_variant_supply.py</span></code></pre></div>
+<p>Converts the polyprotein-keyed <code>aa_level_supply_table.csv</code>
+into a mature-protein table (Pro, RT, IN, p24) renumbered into each
+protein&#39;s own coordinates. Mature boundaries come from the GenBank
+<code>misc_feature</code> records in
+<code>data/pipeline/00-bed_files/NL43.gb</code>. Defaults:
+<code>--aa-supply</code>
+<code>.../comprehensive_analysis_mra_product/aa_level_supply_table.csv</code>,
+<code>--genbank</code> <code>.../00-bed_files/NL43.gb</code>,
+<code>--out</code>
+<code>data/mutation_supply/mra_variant_supply.csv</code>
+(<code>--no-verify</code> to skip the cross-check against the legacy
+workbook).</p>
+<hr />
+<h2 id="6-script-inventory">6. Script inventory</h2>
+<pre><code>scripts/model/mra/
+  # configuration loaders
+  mra_run.py                                            RunConfig: load mra_run_*.csv (sampling/structure/data settings)
+  mra_priors.py                                         FilePriors: load mra_priors.csv (Normal/HalfNormal/Exponential)
+
+  # build input
+  mra_build_model_input.py                              pipeline → mutation_supply_data.csv (per-REC filter, edge trim)
+
+  # prior tooling
+  mra_prior_predictive.py                               prior predictive simulation + acceptance checks (pre-fit)
+  mra_prior_audit.py                                    prior vs posterior contraction / z-shift (post-fit)
+  mra_prior_transfer.py                                 legacy transfer-prior loader (NOT used; final fit uses explicit priors)
+
+  # fit
+  mra_MutationSupplyPymc_production_joint_WT_control.py the production model (requires --priors, --run)
+
+  # post-fit + analyses
+  mra_MutationSupplyPymc_postfit_analysis.py            FINAL dataset, PPC, R², position profiles, figures
+  mra-PostFitDiagnostics.py                             calibration diagnostics
+  mra-BuildMutationSupplyTable.py                       per-site bio_rate table with CIs
+  mra_comprehensive_mutation_supply_analysis.py         AA-level supply / Mutation Rate Atlas (wrapper)
+  comprehensive_mutation_supply_analysis.py             shared module for the above
+  mra_sliding_window_observed_vs_bio.py                 sliding-window observed vs modeled (wrapper)
+  sliding_window_observed_vs_bio.py                     shared module for the above
+  mra_build_variant_supply.py                           mature-protein variant-supply table
+
+  mra_RUNBOOK.md / mra_RUNBOOK.html                     this document</code></pre>
+<p>Configuration files (under <code>data/models/mra/</code>):
+<code>mra_run_production.csv</code>, <code>mra_run_test.csv</code>,
+<code>mra_priors.csv</code>.</p>
+<hr />
+<h2 id="7-extended-data-mapping">7. Extended-data mapping</h2>
+<table>
+<thead>
+<tr>
+<th>Extended-data item</th>
+<th>File(s)</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Model fit (convergence + posterior)</td>
+<td><code>&lt;OUTDIR&gt;/posterior_summary.csv</code>,
+<code>posterior_diagnostics.csv</code>,
+<code>model_metadata.json</code>, <code>idata.nc</code></td>
+</tr>
+<tr>
+<td>Mutation-supply input table</td>
+<td><code>data/models/mra/mutation_supply_data.csv</code></td>
+</tr>
+<tr>
+<td>Prior specification</td>
+<td><code>data/models/mra/mra_priors.csv</code></td>
+</tr>
+<tr>
+<td>Run settings</td>
+<td><code>data/models/mra/mra_run_production.csv</code></td>
+</tr>
+<tr>
+<td>Per-site atlas (nucleotide)</td>
+<td><code>&lt;OUTDIR&gt;/FINAL_mutation_supply_dataset.csv</code></td>
+</tr>
+<tr>
+<td>Amino-acid atlas (MRA)</td>
+<td><code>&lt;OUTDIR&gt;/comprehensive_analysis_mra_product/aa_level_supply_table.csv</code></td>
+</tr>
+<tr>
+<td>Sliding-window validation (Fig. 3)</td>
+<td><code>&lt;OUTDIR&gt;/sliding_window_analysis/</code></td>
+</tr>
+</tbody>
+</table>
+<hr />
+<h2 id="8-reproducibility-checklist">8. Reproducibility checklist</h2>
+<ol type="1">
+<li>Activate <code>pymc_env</code> (PyMC 5.26.1) from the repo
+root.</li>
+<li><code>mra_build_model_input.py --run mra_run_production.csv</code> →
+<code>mutation_supply_data.csv</code>.</li>
+<li>(Optional) <code>mra_prior_predictive.py</code> to confirm the
+prior.</li>
+<li><code>mra_MutationSupplyPymc_production_joint_WT_control.py --priors mra_priors.csv --run mra_run_production.csv --outdir production</code>.</li>
+<li>Confirm convergence: no parameters with R-hat &gt; 1.01 or ESS &lt;
+400 (<code>posterior_diagnostics.csv</code> /
+<code>postfit_model_checklist.txt</code>).</li>
+<li><code>mra_prior_audit.py production</code> to confirm the posterior
+is data-driven.</li>
+<li>Run post-fit (Step 4) and the analyses (Steps 6–10).</li>
+<li>The fixed seed (42) plus the two CSVs fully determine the fit;
+archive the CSVs and <code>model_metadata.json</code> alongside the
+outputs.</li>
+</ol>
+</body>
+</html>

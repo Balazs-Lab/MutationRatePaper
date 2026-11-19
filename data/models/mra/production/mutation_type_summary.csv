@@ -1,0 +1,15 @@
+mut_type,n_sites,control_corrected,uses_nucleotide_context,correction_scheme,likelihood_family,context_scheme,total_wt_count,total_control_count,mean_bio_rate,median_bio_rate,mean_error_rate,mean_wt_total_rate
+A->C,3037,True,True,joint_control_wt,negative_binomial_sub_3p1_type_context_shared_spline_joint_control_wt,sub_3p1,172,9,6.31071437006074e-06,4.651758187001309e-06,1.3663002736112225e-07,6.4473443974218615e-06
+A->G,3037,True,True,joint_control_wt,negative_binomial_sub_3p1_type_context_shared_spline_joint_control_wt,sub_3p1,570,77,1.9240571698201395e-05,1.4208064573532309e-05,1.2683098359034453e-06,2.050888153410484e-05
+A->T,3037,True,True,joint_control_wt,negative_binomial_sub_3p1_type_context_shared_spline_joint_control_wt,sub_3p1,129,1,4.767756684400982e-06,3.590447368187057e-06,2.792091356937201e-08,4.795677597970355e-06
+C->A,1410,False,True,wt_only_no_control,negative_binomial_sub_3p1_type_context_shared_spline_wt_only,sub_3p1,298,308,2.197395277619519e-05,1.6994900113890013e-05,0.0,2.197395277619519e-05
+C->G,1410,True,True,joint_control_wt,negative_binomial_sub_3p1_type_context_shared_spline_joint_control_wt,sub_3p1,40,0,2.780923580062062e-06,2.0862006374676203e-06,2.4266623991997826e-08,2.80519020405406e-06
+C->T,1410,True,True,joint_control_wt,negative_binomial_sub_3p1_type_context_shared_spline_joint_control_wt,sub_3p1,586,123,3.696347759342192e-05,2.8553560892706473e-05,4.956082293518488e-06,4.19195598869404e-05
+G->A,1938,True,True,joint_control_wt,negative_binomial_ga_3p2_aa_ga_shared_splines_joint_control_wt,ga_3p2,7915,136,0.00033875638957694124,0.0001596025323405761,3.6196099553070997e-06,0.0003423759995322484
+G->C,1938,True,True,joint_control_wt,negative_binomial_sub_3p1_type_context_shared_spline_joint_control_wt,sub_3p1,157,2,8.78232354868576e-06,6.679029162374918e-06,6.418168695654306e-08,8.8465052356423e-06
+G->T,1938,False,True,wt_only_no_control,negative_binomial_sub_3p1_type_context_shared_spline_wt_only,sub_3p1,258,333,1.4048736283769752e-05,1.0862500075649481e-05,0.0,1.4048736283769752e-05
+T->A,1828,True,True,joint_control_wt,negative_binomial_sub_3p1_type_context_shared_spline_joint_control_wt,sub_3p1,275,2,1.4756684431312455e-05,1.1685230855104067e-05,6.73617181531647e-08,1.4824046149465621e-05
+T->C,1828,True,True,joint_control_wt,negative_binomial_sub_3p1_type_context_shared_spline_joint_control_wt,sub_3p1,287,44,1.4688094951054019e-05,1.1402802089496326e-05,1.1201032308696673e-06,1.5808198181923683e-05
+T->G,1828,True,True,joint_control_wt,negative_binomial_sub_3p1_type_context_shared_spline_joint_control_wt,sub_3p1,63,2,3.3894701823444904e-06,2.6203884935193244e-06,6.682745681721198e-08,3.4562976391617023e-06
+deletion,8213,False,False,wt_only_no_control,negative_binomial_deletion_spline_wt_only,indel_no_context,634,5,1.2798517258521614e-05,5.232720705380695e-06,0.0,1.2798517258521614e-05
+insertion,8213,True,False,joint_control_wt,negative_binomial_insertion_spline_joint_control_wt,indel_no_context,243,4,2.5819425483550715e-06,2.19282319692102e-06,2.801959185320683e-08,2.609962140208278e-06

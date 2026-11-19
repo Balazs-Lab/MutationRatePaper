@@ -1,0 +1,11 @@
+AA-level supply (mu_aa) and 95% interval columns (mu_aa_lo95, mu_aa_hi95)
+---------------------------------------------------------------------------
+- mu_aa: sum of mu_path over all mutant-codon paths that yield the same
+  (protein, AA position, alt_aa) / aa_change.
+- Per path, mu_path: product of bio_rate_median at each changed nucleotide site.
+- mu_path_lo95 / mu_path_hi95: product of bio_rate_lo95 / bio_rate_hi95 along
+  the same sites (2- and 3-step paths: product of marginal lower/upper bounds).
+- mu_aa_lo95 / mu_aa_hi95: sum of mu_path_lo95 / mu_path_hi95 over paths.
+
+These intervals approximate joint uncertainty; they are useful for ranking
+and sensitivity, not as exact simultaneous credible intervals.

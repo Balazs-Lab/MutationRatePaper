@@ -1,0 +1,536 @@
+{
+  "model": "mra_joint_control_wt_nb_ga2_sub1_ga3_sum0_bio_splines",
+  "data_path": "/Users/anitido/Bioinformatics/ERR-Seq_2/MutRatePaper/data/models/mra/mutation_supply_data.csv",
+  "wt_only_mut_types": [
+    "C->A",
+    "G->T",
+    "deletion"
+  ],
+  "wt_only_rationale": "C->A/G->T: control artifact inflation; deletion: sparse/uninformative control",
+  "indel_mut_types": [
+    "insertion",
+    "deletion"
+  ],
+  "context_mut_types": [
+    "A->C",
+    "A->G",
+    "A->T",
+    "C->A",
+    "C->G",
+    "C->T",
+    "G->A",
+    "G->C",
+    "G->T",
+    "T->A",
+    "T->C",
+    "T->G"
+  ],
+  "no_context_mut_types": [
+    "insertion",
+    "deletion"
+  ],
+  "shared_sub_mut_types": [
+    "A->C",
+    "A->G",
+    "A->T",
+    "C->A",
+    "C->G",
+    "C->T",
+    "G->C",
+    "G->T",
+    "T->A",
+    "T->C",
+    "T->G"
+  ],
+  "likelihood_by_mut_type": {
+    "A->C": "negative_binomial_sub_3p1_type_context_shared_spline_joint_control_wt",
+    "A->G": "negative_binomial_sub_3p1_type_context_shared_spline_joint_control_wt",
+    "A->T": "negative_binomial_sub_3p1_type_context_shared_spline_joint_control_wt",
+    "C->A": "negative_binomial_sub_3p1_type_context_shared_spline_wt_only",
+    "C->G": "negative_binomial_sub_3p1_type_context_shared_spline_joint_control_wt",
+    "C->T": "negative_binomial_sub_3p1_type_context_shared_spline_joint_control_wt",
+    "G->A": "negative_binomial_ga_3p2_aa_ga_shared_splines_joint_control_wt",
+    "G->C": "negative_binomial_sub_3p1_type_context_shared_spline_joint_control_wt",
+    "G->T": "negative_binomial_sub_3p1_type_context_shared_spline_wt_only",
+    "T->A": "negative_binomial_sub_3p1_type_context_shared_spline_joint_control_wt",
+    "T->C": "negative_binomial_sub_3p1_type_context_shared_spline_joint_control_wt",
+    "T->G": "negative_binomial_sub_3p1_type_context_shared_spline_joint_control_wt",
+    "deletion": "negative_binomial_deletion_spline_wt_only",
+    "insertion": "negative_binomial_insertion_spline_joint_control_wt"
+  },
+  "context_n": 3,
+  "context_mode": "mixed_ga2_else1",
+  "context_column": "context_mixed_ga2_else1",
+  "min_context_count": 0,
+  "pooled_sparse_contexts": [],
+  "ga_pool_2mer_default": [
+    "CC",
+    "CG",
+    "TC",
+    "TT"
+  ],
+  "ga_pool_2mer_configured": [
+    "CC",
+    "CG",
+    "TC",
+    "TT"
+  ],
+  "pooled_ga_2mer_contexts": [
+    "CC",
+    "CG",
+    "TC",
+    "TT"
+  ],
+  "ga_other_2mer_levels": [
+    "CC",
+    "CG",
+    "TC",
+    "TT"
+  ],
+  "ga_spline_shared_label": "SHARED",
+  "ga_ga_2mer": "GA",
+  "ga_spline_context_levels": [
+    "AA",
+    "GA",
+    "SHARED"
+  ],
+  "ga_spline_sigma_prior_scale": {
+    "AA": 0.75,
+    "GA": 0.75,
+    "SHARED": 0.75
+  },
+  "ga_spline_sigma_floor": {
+    "AA": 0.1,
+    "GA": 0.1,
+    "SHARED": 0.1
+  },
+  "ga_spline_smoothness_scale": {
+    "AA": 0.08,
+    "GA": 0.18,
+    "SHARED": 0.18
+  },
+  "ga_aa_2mer": "AA",
+  "n_bio_position_splines": 6,
+  "spline_sum_to_zero": true,
+  "n_spline_basis_free": 30,
+  "context_rules": {
+    "substitutions_excl_ga": "beta_sub_type_bio[type] + masked beta_sub_context_delta[type, 1base]; sparse cells pooled to type-only when wt_count < 20",
+    "G->A": "intercept per 2-mer (sparse CC/CG/TC/TT pooled to OTHER); AA and GA each get a position spline; all other 2-mers share one spline",
+    "indels": "no nucleotide context; intercept_bio + type effect + dedicated spline"
+  },
+  "spline_rules": {
+    "G->A_AA": "dedicated position spline (AA 2-mer)",
+    "G->A_GA": "dedicated position spline (GA 2-mer)",
+    "G->A_shared": "shared position spline for all other G->A 2-mers (label SHARED)",
+    "shared_substitutions": "one position spline for all non-G->A substitutions",
+    "insertion": "dedicated insertion spline",
+    "deletion": "dedicated deletion spline",
+    "sum_to_zero": "each bio P-spline samples n_basis-1 free coefficients; last coefficient = -sum(free) so the intercept owns the level",
+    "total_bio_position_splines": 6
+  },
+  "all_ga_2mer_contexts": [
+    "AA",
+    "AC",
+    "AG",
+    "AT",
+    "CA",
+    "CC",
+    "CG",
+    "CT",
+    "GA",
+    "GC",
+    "GG",
+    "GT",
+    "TA",
+    "TC",
+    "TG",
+    "TT"
+  ],
+  "n_ga_contexts_present": 13,
+  "ga_modeling": "intercept_per_2mer_plus_3_ga_splines_sum0",
+  "ga_context_definition": "three_prime_2mer_at_G_sites",
+  "ga_context_levels": [
+    "AA",
+    "AC",
+    "AG",
+    "AT",
+    "CA",
+    "CT",
+    "GA",
+    "GC",
+    "GG",
+    "GT",
+    "OTHER",
+    "TA",
+    "TG"
+  ],
+  "ga_context_total_wt_counts": {
+    "AA": 3328,
+    "AC": 187,
+    "AG": 629,
+    "AT": 922,
+    "CA": 269,
+    "CT": 268,
+    "GA": 1385,
+    "GC": 73,
+    "GG": 165,
+    "GT": 159,
+    "OTHER": 129,
+    "TA": 310,
+    "TG": 91
+  },
+  "ga_bio_rate_centers_log": {
+    "AA": -6.716418136298909,
+    "AC": -8.935569592780208,
+    "AG": -8.006649513029723,
+    "AT": -7.355672479472999,
+    "CA": -8.888789113257856,
+    "CT": -8.374682984557992,
+    "GA": -7.513606332246697,
+    "GC": -9.446017755217662,
+    "GG": -9.218478563008725,
+    "GT": -8.649010617383773,
+    "OTHER": -9.921960516238114,
+    "TA": -8.671825351761724,
+    "TG": -9.522054568922766
+  },
+  "sub_context_1base_levels": [
+    "A",
+    "C",
+    "G",
+    "T"
+  ],
+  "sub_type_bio_centers_log": {
+    "A->C": -12.189013937210289,
+    "A->G": -11.040252099765757,
+    "A->T": -12.451078048329462,
+    "C->A": -10.875300800869638,
+    "C->G": -12.883514833261106,
+    "C->T": -10.327619433276663,
+    "G->C": -11.846474545251567,
+    "G->T": -11.342377351650049,
+    "T->A": -11.265710789261599,
+    "T->C": -11.312860216159061,
+    "T->G": -12.753854144177074
+  },
+  "sub_context_total_wt_counts": {
+    "A->C": {
+      "A": 53,
+      "C": 28,
+      "G": 61,
+      "T": 30
+    },
+    "A->G": {
+      "A": 141,
+      "C": 99,
+      "G": 226,
+      "T": 104
+    },
+    "A->T": {
+      "A": 31,
+      "C": 17,
+      "G": 47,
+      "T": 34
+    },
+    "C->A": {
+      "A": 139,
+      "C": 51,
+      "G": 25,
+      "T": 83
+    },
+    "C->G": {
+      "A": 25,
+      "C": 10,
+      "G": 0,
+      "T": 5
+    },
+    "C->T": {
+      "A": 310,
+      "C": 99,
+      "G": 32,
+      "T": 145
+    },
+    "G->C": {
+      "A": 69,
+      "C": 22,
+      "G": 42,
+      "T": 24
+    },
+    "G->T": {
+      "A": 101,
+      "C": 46,
+      "G": 73,
+      "T": 38
+    },
+    "T->A": {
+      "A": 76,
+      "C": 23,
+      "G": 86,
+      "T": 90
+    },
+    "T->C": {
+      "A": 79,
+      "C": 50,
+      "G": 70,
+      "T": 88
+    },
+    "T->G": {
+      "A": 12,
+      "C": 15,
+      "G": 22,
+      "T": 14
+    }
+  },
+  "sub_context_powered": {
+    "A->C": {
+      "A": true,
+      "C": true,
+      "G": true,
+      "T": true
+    },
+    "A->G": {
+      "A": true,
+      "C": true,
+      "G": true,
+      "T": true
+    },
+    "A->T": {
+      "A": true,
+      "C": false,
+      "G": true,
+      "T": true
+    },
+    "C->A": {
+      "A": true,
+      "C": true,
+      "G": true,
+      "T": true
+    },
+    "C->G": {
+      "A": true,
+      "C": false,
+      "G": false,
+      "T": false
+    },
+    "C->T": {
+      "A": true,
+      "C": true,
+      "G": true,
+      "T": true
+    },
+    "G->C": {
+      "A": true,
+      "C": true,
+      "G": true,
+      "T": true
+    },
+    "G->T": {
+      "A": true,
+      "C": true,
+      "G": true,
+      "T": true
+    },
+    "T->A": {
+      "A": true,
+      "C": true,
+      "G": true,
+      "T": true
+    },
+    "T->C": {
+      "A": true,
+      "C": true,
+      "G": true,
+      "T": true
+    },
+    "T->G": {
+      "A": false,
+      "C": false,
+      "G": true,
+      "T": false
+    }
+  },
+  "sub_context_pooled_cells": [
+    {
+      "mut_type": "A->T",
+      "context_3p": "C"
+    },
+    {
+      "mut_type": "C->G",
+      "context_3p": "C"
+    },
+    {
+      "mut_type": "C->G",
+      "context_3p": "G"
+    },
+    {
+      "mut_type": "C->G",
+      "context_3p": "T"
+    },
+    {
+      "mut_type": "T->G",
+      "context_3p": "A"
+    },
+    {
+      "mut_type": "T->G",
+      "context_3p": "C"
+    },
+    {
+      "mut_type": "T->G",
+      "context_3p": "T"
+    }
+  ],
+  "min_sub_context_wt_count": 20,
+  "include_position_splines": true,
+  "include_position_bio": true,
+  "include_position_err": false,
+  "spline_df": 30,
+  "n_spline_basis": 31,
+  "position_mean": 4107.0,
+  "position_std": 2370.917730893402,
+  "mut_type_levels": [
+    "A->C",
+    "A->G",
+    "A->T",
+    "C->A",
+    "C->G",
+    "C->T",
+    "G->A",
+    "G->C",
+    "G->T",
+    "T->A",
+    "T->C",
+    "T->G",
+    "deletion",
+    "insertion"
+  ],
+  "drop_indels": false,
+  "random_seed": 42,
+  "draws": 2000,
+  "tune": 6000,
+  "chains": 4,
+  "target_accept": 0.98,
+  "prior_file": "/Users/anitido/Bioinformatics/ERR-Seq_2/MutRatePaper/data/models/mra/mra_priors.csv",
+  "prior_unique": {
+    "error_intercept": {
+      "n": 1,
+      "family": "Normal",
+      "location": -13.81551056,
+      "scale": 1.5,
+      "location_note": "log(1e-6)"
+    },
+    "error_type_spread": {
+      "n": 1,
+      "family": "HalfNormal",
+      "location": null,
+      "scale": 1.0,
+      "location_note": null
+    },
+    "unit_normal": {
+      "n": 72,
+      "family": "Normal",
+      "location": 0.0,
+      "scale": 1.0,
+      "location_note": "0"
+    },
+    "bio_log_rate": {
+      "n": 25,
+      "family": "Normal",
+      "location": -11.51292546,
+      "scale": 2.0,
+      "location_note": "log(1e-5)"
+    },
+    "bio_type_spread": {
+      "n": 1,
+      "family": "HalfNormal",
+      "location": null,
+      "scale": 1.0,
+      "location_note": null
+    },
+    "context_spread": {
+      "n": 1,
+      "family": "HalfNormal",
+      "location": null,
+      "scale": 0.5,
+      "location_note": null
+    },
+    "spline_amplitude": {
+      "n": 6,
+      "family": "HalfNormal",
+      "location": null,
+      "scale": 0.75,
+      "location_note": null
+    },
+    "spline_shape": {
+      "n": 180,
+      "family": "Normal",
+      "location": 0.0,
+      "scale": 1.0,
+      "location_note": "0"
+    },
+    "dispersion": {
+      "n": 28,
+      "family": "Exponential",
+      "location": null,
+      "scale": 1.0,
+      "location_note": null
+    }
+  },
+  "run_file": "/Users/anitido/Bioinformatics/ERR-Seq_2/MutRatePaper/data/models/mra/mra_run_production.csv",
+  "run_settings": {
+    "random_seed": 42,
+    "chains": 4,
+    "cores": 4,
+    "draws": 2000,
+    "tune": 6000,
+    "target_accept": 0.98,
+    "context_mode": "mixed_ga2_else1",
+    "context_n": 3,
+    "min_context_count": 0,
+    "min_sub_context_wt_count": 20,
+    "drop_indels": false,
+    "include_position_bio": true,
+    "include_position_err": false,
+    "spline_df": 30,
+    "ga_pool_2mers": [
+      "CC",
+      "CG",
+      "TC",
+      "TT"
+    ],
+    "wt_only_mut_types": [
+      "C->A",
+      "G->T",
+      "deletion"
+    ],
+    "spline_sigma_floor": 0.1,
+    "spline_sum_to_zero": true,
+    "spline_smoothness_scale": 0.25,
+    "spline_smoothness_scale_ga_aa": 0.08,
+    "spline_smoothness_scale_ga_non_aa": 0.18,
+    "max_muts_per_rec": 1000,
+    "edge_trim": 20,
+    "wt_groups": [
+      "WT",
+      "NEG",
+      "Sparsomycin",
+      "pUC19"
+    ],
+    "control_groups": [
+      "ePCR"
+    ],
+    "context_k": 5,
+    "source": "/Users/anitido/Bioinformatics/ERR-Seq_2/MutRatePaper/data/models/mra/mra_run_production.csv"
+  },
+  "use_transfer_priors": false,
+  "prior_sigma_spline_floor": 0.1,
+  "spline_smoothness_scale": 0.25,
+  "spline_smoothness_scale_ga_aa": 0.08,
+  "spline_smoothness_scale_ga_non_aa": 0.18,
+  "n_obs": 41065,
+  "n_obs_control_corrected": 29504,
+  "n_obs_wt_only": 11561,
+  "control_base_rate": 6.973706698895234e-07,
+  "wt_base_rate": 2.5356293322089652e-05,
+  "bio_excess_rate": 2.465892265220013e-05,
+  "primary_release_variable": "bio_rate"
+}

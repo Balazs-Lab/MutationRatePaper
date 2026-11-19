@@ -1,0 +1,37 @@
+
+Call:
+glm.nb(formula = all_muts ~ log_mu_aa + fitness + Pos + Rx + 
+    offset(log(all_seqs)), data = mut_type_df, init.theta = 0.7513408394, 
+    link = log)
+
+Coefficients:
+            Estimate Std. Error z value Pr(>|z|)    
+(Intercept)  6.17981    1.74664   3.538 0.000403 ***
+log_mu_aa    2.07627    0.33841   6.135 8.49e-10 ***
+fitness      3.48945    0.56294   6.199 5.70e-10 ***
+Pos46        0.03710    0.67063   0.055 0.955885    
+Pos48        0.08299    0.69829   0.119 0.905401    
+Pos50        3.24352    0.72470   4.476 7.62e-06 ***
+Pos53       -0.32311    0.69911  -0.462 0.643960    
+Pos54        1.49054    0.60121   2.479 0.013167 *  
+Pos73       -1.78535    0.59858  -2.983 0.002858 ** 
+Pos82        1.89799    0.63870   2.972 0.002962 ** 
+Pos88        0.50137    0.64956   0.772 0.440197    
+RxLPV       -0.50971    0.33310  -1.530 0.125960    
+RxPI         0.87372    0.32782   2.665 0.007694 ** 
+---
+Signif. codes:  0 ‘***’ 0.001 ‘**’ 0.01 ‘*’ 0.05 ‘.’ 0.1 ‘ ’ 1
+
+(Dispersion parameter for Negative Binomial(0.7513) family taken to be 1)
+
+    Null deviance: 196.741  on 80  degrees of freedom
+Residual deviance:  92.371  on 68  degrees of freedom
+AIC: 855.37
+
+Number of Fisher Scoring iterations: 1
+
+
+              Theta:  0.751 
+          Std. Err.:  0.117 
+
+ 2 x log-likelihood:  -827.367 

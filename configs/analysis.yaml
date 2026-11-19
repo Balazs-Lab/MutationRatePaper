@@ -1,0 +1,301 @@
+# =============================================================================
+# Analysis configuration — ERRSeq Paper
+# Used by Pipeline.Snakefile steps 11–12 (coding_analysis, prepare_rec_data) and manual figure scripts.
+# =============================================================================
+#
+# Pipeline step 11 reads sample_groups from this file automatically.
+#
+# Figure scripts (run manually, not via Snakemake):
+#   python scripts/figures/01_figure_1d.py  # etc.
+#   Input: data/pipeline/11-analysis/consensus_sequence_data.csv
+#
+# Figure 3+ modelling: scripts/model/ (separate workflow)
+# =============================================================================
+
+metadata:
+  run_label: "NL43-WT-Analyses"
+  description: "ERR-Seq Paper NL43 WT samples — post-processing analysis"
+
+# -----------------------------------------------------------------------------
+# Inputs: snakefiles/Pipeline.Snakefile outputs consumed here as entry points
+# These should match the output_dir values in the corresponding pipeline config
+# (configs/pipeline/ERR-Seq Paper/ERR-Seq Paper Samples.yaml).
+# -----------------------------------------------------------------------------
+inputs:
+  # Pipeline step 10 outputs
+  mutation_analysis_dir: data/pipeline/10-mutation_analysis_ERRSeq-PAPER-SAMPLES
+
+  # Pipeline step 8 outputs (used by prepare_rec_data for per-REC sequence lengths)
+  compiled_consensus_dir: data/pipeline/08-compiled_consensus
+
+  # Pipeline step 11 outputs (coding mutational effects)
+  coding_data_dir: data/pipeline/11-analysis
+  coding_mutations_csv: data/pipeline/11-analysis/coding_mutations.csv
+  dinuc_context_data_dir: data/analysis/13-dinucleotide_context_analysis
+
+# -----------------------------------------------------------------------------
+# References
+# -----------------------------------------------------------------------------
+references:
+  consensus_reference_dir: data/pipeline/00-consensus_reference
+  biological_reference_dir: data/pipeline/00-reference_sequence
+  indel_reference_fa: data/pipeline/00-consensus_reference/LP249.fa
+  genbank_file: data/pipeline/00-bed_files/NL43.gb
+  amplicon_coordinates_yaml: data/pipeline/00-sample-groups/amplicon_coordinates.yaml
+
+# -----------------------------------------------------------------------------
+# Sample groups — defined inline for a self-contained analysis config.
+# Sample names use the NL43-LPxxx-* convention matching the current data in
+# data/10-mutation_analysis_NL43-ALL-Samples/ (produced by snakefiles/Pipeline.Snakefile).
+#
+# Groups:
+#   samples  — WT experimental samples (ERR-Seq Paper Samples.yaml)
+#   controls — ePCR error-rate controls  (ERR-Seq Paper Controls.yaml)
+#   library  — library sequencing control (ERR-Seq Paper Library.yaml)
+# -----------------------------------------------------------------------------
+sample_groups:
+
+  # WT experimental NL43 samples across three libraries (LP249, LP252, LP253).
+  - name: samples
+    samples:
+      # LP249 — WT replicates (17 samples)
+      - LP249-NL43-NEG-0-A
+      - LP249-NL43-NEG-0-B
+      - LP249-NL43-NEG-0-C
+      - LP249-NL43-pUC19-1-A
+      - LP249-NL43-pUC19-1-B
+      - LP249-NL43-pUC19-1-C
+      - LP249-NL43-pUC19-10-A
+      - LP249-NL43-pUC19-10-B
+      - LP249-NL43-pUC19-10-C
+      - LP249-NL43-Sparsomycin-0-A
+      - LP249-NL43-Sparsomycin-0-B
+      - LP249-NL43-Sparsomycin-0-C
+      - LP249-NL43-WT-1-A
+      - LP249-NL43-WT-1-B
+      - LP249-NL43-WT-1-C
+      - LP249-NL43-WT-1-P1
+      - LP249-NL43-WT-1-P2
+      # LP252 — WT replicates (28 samples: A–Z + AA)
+      - NL43-LP252-WT-1-A
+      - NL43-LP252-WT-1-B
+      - NL43-LP252-WT-1-C
+      - NL43-LP252-WT-1-D
+      - NL43-LP252-WT-1-E
+      - NL43-LP252-WT-1-F
+      - NL43-LP252-WT-1-G
+      - NL43-LP252-WT-1-H
+      - NL43-LP252-WT-1-I
+      - NL43-LP252-WT-1-J
+      - NL43-LP252-WT-1-K
+      - NL43-LP252-WT-1-L
+      - NL43-LP252-WT-1-M
+      - NL43-LP252-WT-1-N
+      - NL43-LP252-WT-1-O
+      - NL43-LP252-WT-1-P
+      - NL43-LP252-WT-1-Q
+      - NL43-LP252-WT-1-R
+      - NL43-LP252-WT-1-S
+      - NL43-LP252-WT-1-T
+      - NL43-LP252-WT-1-U
+      - NL43-LP252-WT-1-V
+      - NL43-LP252-WT-1-W
+      - NL43-LP252-WT-1-X
+      - NL43-LP252-WT-1-Y
+      - NL43-LP252-WT-1-Z
+      - NL43-LP252-WT-1-AA
+      # LP253 — WT replicates (27 samples: A–Z + AA)
+      - NL43-LP253-WT-1-A
+      - NL43-LP253-WT-1-B
+      - NL43-LP253-WT-1-C
+      - NL43-LP253-WT-1-D
+      - NL43-LP253-WT-1-E
+      - NL43-LP253-WT-1-F
+      - NL43-LP253-WT-1-G
+      - NL43-LP253-WT-1-H
+      - NL43-LP253-WT-1-I
+      - NL43-LP253-WT-1-J
+      - NL43-LP253-WT-1-K
+      - NL43-LP253-WT-1-L
+      - NL43-LP253-WT-1-M
+      - NL43-LP253-WT-1-N
+      - NL43-LP253-WT-1-O
+      - NL43-LP253-WT-1-P
+      - NL43-LP253-WT-1-Q
+      - NL43-LP253-WT-1-R
+      - NL43-LP253-WT-1-S
+      - NL43-LP253-WT-1-T
+      - NL43-LP253-WT-1-U
+      - NL43-LP253-WT-1-V
+      - NL43-LP253-WT-1-W
+      - NL43-LP253-WT-1-X
+      - NL43-LP253-WT-1-Y
+      - NL43-LP253-WT-1-Z
+      - NL43-LP253-WT-1-AA
+
+  # ePCR error-rate controls (6 replicates per library).
+  - name: controls
+    samples:
+      - LP249-ePCR-WT-1-A
+      - LP249-ePCR-WT-1-B
+      - LP249-ePCR-WT-1-C
+      - LP252-ePCR-WT-1-A
+      - LP252-ePCR-WT-1-B
+      - LP252-ePCR-WT-1-C
+      - LP253-ePCR-WT-1-A
+      - LP253-ePCR-WT-1-B
+      - LP253-ePCR-WT-1-C
+      - LP249-FFPE-WT-1-A
+      - LP249-FFPE-WT-1-B
+      - LP249-FFPE-WT-1-C
+      - LP252-FFPE-WT-1-A
+      - LP252-FFPE-WT-1-B
+      - LP252-FFPE-WT-1-C
+      - LP253-FFPE-WT-1-A
+      - LP253-FFPE-WT-1-B
+      - LP253-FFPE-WT-1-C
+
+
+# -----------------------------------------------------------------------------
+# Analysis parameters — organized by figure
+# Script mapping:
+#   Figures 1D–2B  →  scripts/analysis_scripts/00-04_*.py
+#   Figures 2C–2F  →  scripts/analysis_scripts/06-09_*.py (+ 08_nucleotide_context.py)
+#   Extended Data  →  scripts/analysis_scripts/04_coding_analysis.py (+ related helpers)
+# -----------------------------------------------------------------------------
+analysis:
+  # Groups to include across all analyses.
+  # Must match a 'name' in sample_groups above.
+  include_groups:
+    - samples
+
+  # ── Figure 1D ─────────────────────────────────────────────────────────────
+  # Total RECs recovered per sample, broken down by group and library.
+  # Bar chart showing REC yield for each library (LP249, LP252, LP253) within
+  # the experimental samples and ePCR controls, for cross-library QC comparison.
+  figure_1d:
+    groups: [samples, controls]
+    library_prefixes: [LP249, LP252, LP253]
+
+  # ── Figure 1E ─────────────────────────────────────────────────────────────
+  # Bulk NL43 mutation rate, compared across experimental samples and ePCR controls,
+  # broken down by library (LP249, LP252, LP253).
+  # Bootstrap CI is computed per group (pooled across all libraries within the group).
+  figure_1e:
+    groups: [samples, controls]
+    library_prefixes: [LP249, LP252, LP253]
+    n_boot: 1000          # Bootstrap replicates per group
+    n_recs_per_boot: 500   # RECs drawn per replicate (pooled within group)
+    seed: 1
+    corrected_bootstrap:
+      experimental_group: samples  # group whose rate is corrected
+      control_group: controls      # group subtracted as background
+      # Library types group libraries that share the same amplicon.
+      # Each type pools its member libraries for a matched control correction.
+      # Individual per-library scopes are also produced alongside these.
+      library_types:
+        Env+:   [LP249, LP253]   # Env+ amplicon libraries
+        GagPol: [LP252]          # GagPol amplicon library
+
+  # ── Figure 2A ─────────────────────────────────────────────────────────────
+  # Per-sample mutation count distribution across RECs.
+  # Violin / box plot of mutations-per-REC stratified by sample; bootstrap CI
+  # estimates the median mutation count per sample.
+  figure_2a:
+    groups: [samples]
+    n_boot: 500
+    n_recs_per_boot: 2500  # RECs drawn per replicate (per sample)
+    seed: 1
+
+  # ── Figure 2B ─────────────────────────────────────────────────────────────
+  # AA Change Types across Genes.
+  # Per-gene fractions of synonymous / missense / nonsense substitutions, pooled
+  # across all samples in the specified group.  Substitutions only; noncoding
+  # regions excluded.  Requires coding_mutations.csv from 04_coding_analysis.py.
+  figure_2b:
+    groups: [samples]
+
+  # ── Figure 2C ─────────────────────────────────────────────────────────────
+  # Lethal RECs Distribution by library type (Env+ vs GagPol).
+  # Bootstrap estimate of the fraction of RECs carrying ≥1 deleterious coding
+  # mutation (nonsense substitution OR frameshift indel OR premature stop codon),
+  # stratified by library design.
+  # Groups:  samples
+  figure_2c:
+    groups: [samples]
+    n_boot: 10000          # Bootstrap replicates per library type
+    n_sample_per_boot: 500 # RECs drawn per replicate (with replacement)
+    seed: 42
+
+  # ── Figure 2D ─────────────────────────────────────────────────────────────
+  # Fraction of RECs with Lethal Mutation by Mutations per REC.
+  # Stratified bootstrap within each mutation-count bin (0, 1, …, 9, 10+):
+  # fraction of RECs in that bin carrying ≥1 deleterious coding mutation.
+  # Draw size per bin = that bin's actual REC count (uncertainty tracks bin size).
+  # Lethal definition: deleterious (matches Figure 2C).
+  # Groups:  samples
+  figure_2d:
+    groups: [samples]
+    n_boot: 1000  # Bootstrap replicates per bin
+    seed: 42
+    # draw_size: variable (= each bin's actual REC count, not a fixed n_sample)
+    # This is intentional: CIs scale with bin size so that rare bins (e.g. 7 muts,
+    # n=38) show wider uncertainty than common bins (e.g. 0 muts, n=15167).
+    # Using a fixed draw size would make CIs artificially comparable across bins.
+
+  # ── Figure 2E ─────────────────────────────────────────────────────────────
+  # G→A dinucleotide enrichment score — pooled bootstrap.
+  # Enrichment = (fraction of mutations that are G→A at context X) /
+  #              (fraction of reference bases at context X).
+  # Four contexts reported: GA, GG, GC, GT.
+  # All samples in the group are pooled; one enrichment per context per draw.
+  # Requires umi_3prime_dinucleotide_substitution_counts.csv from
+  # 08_nucleotide_context.py (nucleotide_context rule).
+  figure_2e:
+    groups: [samples]
+    n_boot: 1000          # Bootstrap replicates
+    n_recs_per_boot: 500  # RECs drawn per replicate (with replacement)
+    seed: 1
+
+  # ── Figure 2F ─────────────────────────────────────────────────────────────
+  # G→A dinucleotide enrichment score — stratified by mutations-per-REC group.
+  # Same enrichment formula as Figure 2E, bootstrapped independently within
+  # each mutation-count bin (1, 2, 3, 4, 5-9, 10+); 0-mutation RECs excluded.
+  figure_2f:
+    groups: [samples]
+    n_boot: 1000          # Bootstrap replicates per mutation-count bin
+    n_recs_per_boot: 500  # RECs drawn per replicate (with replacement)
+    seed: 1
+
+  # ── Extended Data — Coding / Lethal Analysis ──────────────────────────────
+  # Per-gene enrichment of lethal coding mutations relative to a null model.
+  # null_models controls which null distribution(s) are tested (can list multiple):
+  #   length            — proportional to CDS nucleotide length
+  #   mutation_exposure — proportional to observed coding mutation counts (recommended)
+  #   length_x_exposure — combines length and exposure
+  # lethal_def selects which mutations count as lethal: pipeline | deleterious | either
+  lethal_enrichment:
+    groups: [samples]
+    null_models:
+      - mutation_exposure
+      - length
+    lethal_def: pipeline
+
+  # ── Extended Data — UMIset Lethal Fraction Bootstrap ──────────────────────
+  # Per-UMIset fraction of lethal / deleterious coding mutations, with
+  # bootstrap confidence intervals.
+  umiset_bootstrap:
+    groups: [samples]
+    n_boot_by_gene: 500        # Draws for per-gene fraction lethal
+    n_sample_size: 500         # Consensus rows per bootstrap draw
+    n_boot_all_recs: 10000     # Draws for all-RECs-per-group bootstrap
+
+# -----------------------------------------------------------------------------
+# Output directories (manual figure / extended analyses)
+# -----------------------------------------------------------------------------
+outputs:
+  prepared_data_dir: data/pipeline/11-analysis
+  rec_analysis_dir: data/analysis/Main_Figures
+  indel_analysis_dir: data/analysis/INDEL_Analysis
+  nucleotide_context_dir: data/analysis/Nucleotide_Context
+  coding_analysis_dir: data/analysis/Coding_Analysis

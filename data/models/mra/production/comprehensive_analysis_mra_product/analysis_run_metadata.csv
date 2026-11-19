@@ -1,0 +1,2 @@
+model_version,final_dataset,n_site_rows,n_positions_nt,n_codons_inferred,n_proteins_annotated,codon_annotation_mode,n_aa_paths,n_aa_changes,within_aa_variance,between_aa_variance,site_level_bio_rate_ci_used,aa_ci_columns
+mra,/Users/anitido/Bioinformatics/ERR-Seq_2/MutRatePaper/data/models/mra/production/FINAL_mutation_supply_dataset.csv,24639,8213,2984,9,gene_annotated,187992,62518,0.0,5.5236961560953945,True,"mu_aa_lo95,mu_aa_hi95,log10_mu_aa_lo95,log10_mu_aa_hi95"

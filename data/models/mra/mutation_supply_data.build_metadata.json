@@ -1,0 +1,37 @@
+{
+  "run_file": "/Users/anitido/Bioinformatics/ERR-Seq_2/MutRatePaper/data/models/mra/mra_run_production.csv",
+  "reference_strain": "NL43",
+  "libraries": [
+    "LP249",
+    "LP252",
+    "LP253"
+  ],
+  "max_muts_per_rec_inclusive": 1000,
+  "rec_filter_rule": "keep RECs with Total_Mutations <= 1000",
+  "edge_trim": 20,
+  "context_k": 5,
+  "wt_groups": [
+    "NEG",
+    "Sparsomycin",
+    "WT",
+    "pUC19"
+  ],
+  "control_groups": [
+    "ePCR"
+  ],
+  "inputs": {
+    "all_mutations": "/Users/anitido/Bioinformatics/ERR-Seq_2/MutRatePaper/data/pipeline/10-mutation_analysis_ERRSeq-PAPER-SAMPLES/all_mutations.csv",
+    "consensus_sequence_data": "/Users/anitido/Bioinformatics/ERR-Seq_2/MutRatePaper/data/pipeline/10-mutation_analysis_ERRSeq-PAPER-SAMPLES/consensus_sequence_data.csv",
+    "reference_map_dir": "/Users/anitido/Bioinformatics/ERR-Seq_2/MutRatePaper/data/pipeline/00-reference-map",
+    "reference_source": "reference-map ref_pos/ref_base columns"
+  },
+  "rec_stats": {
+    "recs_considered": 60677,
+    "recs_kept": 60677,
+    "recs_dropped": 0
+  },
+  "n_mutations_post_filter": 12684,
+  "n_covered_positions": 8213,
+  "n_output_rows": 41065,
+  "output": "/Users/anitido/Bioinformatics/ERR-Seq_2/MutRatePaper/data/models/mra/mutation_supply_data.csv"
+}

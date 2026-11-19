@@ -1,0 +1,146 @@
+# Amplicon Coordinates Configuration
+# Defines genomic regions covered by each amplicon used in different libraries
+#
+# Based on analysis of:
+# - REC length distributions per library
+# - Mutation position distributions
+# - Consensus sequence boundaries
+#
+# Date: 2026-01-28
+
+reference:
+  name: "NL43"
+  length: 8618
+  description: "HIV-1 NL4-3 reference genome"
+
+amplicons:
+  - name: "Amplicon_1"
+    description: "Envelope region amplicon (Env)"
+    start: 4266
+    end: 8234
+    length: 3969
+    expected_rec_length: 3969
+    genomic_regions:
+      - name: "Vif"
+        start: 4587
+        end: 5165
+      - name: "Vpr"
+        start: 5105
+        end: 5396
+      - name: "Tat_exon1"
+        start: 5377
+        end: 5619
+      - name: "Rev_exon1"
+        start: 5516
+        end: 5591
+      - name: "Vpu"
+        start: 5608
+        end: 5856
+      - name: "Env"
+        start: 5771
+        end: 8341
+    notes: "Covers Env region, used by LP249 and LP253 libraries"
+
+  - name: "Amplicon_2"
+    description: "Gag-Pol region amplicon"
+    start: 4
+    end: 4782
+    length: 4779
+    expected_rec_length: 4810  # Some RECs are slightly longer
+    genomic_regions:
+      - name: "5_LTR"
+        start: 1
+        end: 634
+      - name: "Gag"
+        start: 790
+        end: 2292
+      - name: "Pol"
+        start: 2085
+        end: 5096
+      - name: "Vif_partial"
+        start: 4587
+        end: 4782
+    notes: "Covers GagPol region plus partial Vif, used by LP252 library"
+
+# Library to amplicon mapping
+library_amplicons:
+  LP249:
+    amplicon: "Amplicon_1"
+    coverage_region:
+      start: 4266
+      end: 8234
+    notes: "Pilot library, Env region only"
+  
+  LP252:
+    amplicon: "Amplicon_2"
+    coverage_region:
+      start: 4
+      end: 4782
+    notes: "GagPol region, limited samples"
+  
+  LP253:
+    amplicon: "Amplicon_1"
+    coverage_region:
+      start: 4266
+      end: 8234
+    notes: "Env region, matches LP249 design"
+
+# Overlap regions (positions covered by multiple amplicons when pooling libraries)
+overlap_regions:
+  - name: "Amplicon_overlap_Vif"
+    start: 4266
+    end: 4782
+    length: 517
+    amplicons: ["Amplicon_1", "Amplicon_2"]
+    libraries: ["LP249", "LP252", "LP253"]
+    notes: "Region with 2x coverage when pooling all WT samples, covers partial Vif gene"
+
+# Coverage gaps (positions not covered by any amplicon)
+coverage_gaps:
+  - name: "Gap_1_Start"
+    start: 1
+    end: 3
+    length: 3
+    notes: "First 3 nucleotides of genome not covered"
+  
+  - name: "Gap_2_Middle"
+    start: 4783
+    end: 4265
+    length: 0
+    notes: "No gap - amplicons overlap"
+  
+  - name: "Gap_3_End"
+    start: 8235
+    end: 8618
+    length: 384
+    notes: "Last 384 nucleotides not covered (after Env)"
+
+# Expected coverage by region (for WT pooled samples)
+expected_coverage:
+  - region: "Positions 1-3"
+    libraries: []
+    expected_recs: 0
+    notes: "No coverage"
+  
+  - region: "Positions 4-4265"
+    libraries: ["LP252"]
+    expected_recs: "~300"
+    notes: "LP252 only (1x coverage)"
+  
+  - region: "Positions 4266-4782"
+    libraries: ["LP249", "LP252", "LP253"]
+    expected_recs: "~6000"
+    notes: "All libraries (2x coverage - overlap region)"
+  
+  - region: "Positions 4783-8234"
+    libraries: ["LP249", "LP253"]
+    expected_recs: "~5700"
+    notes: "LP249 and LP253 only (1x coverage)"
+  
+  - region: "Positions 8235-8618"
+    libraries: []
+    expected_recs: 0
+    notes: "No coverage"
+
+version: "1.0"
+created_date: "2026-01-28"

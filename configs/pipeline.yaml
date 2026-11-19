@@ -1,0 +1,246 @@
+# =============================================================================
+# BELT Pipeline Configuration — ERR-Seq Paper (MutRatePaper)
+# =============================================================================
+#
+# Used with: snakefiles/Pipeline.Snakefile
+#
+#   snakemake -s snakefiles/Pipeline.Snakefile --configfile configs/pipeline.yaml --cores 24
+#   snakemake -s snakefiles/Pipeline.Snakefile --configfile configs/pipeline.yaml -n  # dry-run
+#
+# Pipeline steps (all paths under data/pipeline/ unless noted):
+#   1  FASTQ filter          → 02-fastq_filtered
+#   2  Map reads             → 03-mapped_reads
+#   3  Sort/index BAM        → 04-sorted_reads
+#   4  UMI map (cluster)     → 05-umi_maps          [scripts/pipeline/]
+#   5  UMI group             → 06-umi_groups
+#   6  Consensus call        → 07-consensus_calls
+#   7  Compile consensus     → 08-compiled_consensus  (removed after step 11)
+#   8  Mutation calling      → 09-mutation_calling_ERRSeq-PAPER-SAMPLES
+#   9  Mutation summary      → 10-mutation_analysis_ERRSeq-PAPER-SAMPLES
+#  10  Prepare analysis data  → 11-analysis            [scripts/analysis/00_prepare_data.py]
+#  11  Coding mutational effects → 11-analysis/tables/ [scripts/analysis/01_coding_analysis.py]
+#
+# Final outputs (rule all):
+#   data/pipeline/10-mutation_analysis_ERRSeq-PAPER-SAMPLES/
+#     all_mutations.csv, consensus_sequence_data.csv, mutation_summary.csv, …
+#   data/pipeline/11-analysis/tables/coding_mutations.csv
+#   data/pipeline/11-analysis/tables/coding_summary_by_gene.csv
+#   data/pipeline/11-analysis/consensus_sequence_data.csv
+#
+# Figure table scripts (scripts/figures/) are run manually after the pipeline.
+# Sample groups and figure parameters: configs/analysis.yaml
+#
+# Intermediate files (BAMs, UMI CSVs, grouped BAMs) are temp() and auto-deleted when
+# keep_intermediates is false. Set keep_intermediates: true for faster reruns.
+# =============================================================================
+
+# Keep large intermediate files between runs (recommended while developing).
+# false = Snakemake temp() + cleanup after each stage (saves disk).
+keep_intermediates: true
+
+metadata:
+  run_label: "ERRSeq-PAPER-SAMPLES"
+  data_source: "ERRSeq-PAPER-SAMPLES"
+  snakefile: snakefiles/Pipeline.Snakefile
+  analysis_config: configs/analysis.yaml
+
+# Input: sample -> FASTQ path used by Step 1 (filter_sequences)
+samples:
+    # Experimental samples:
+    # LP249
+    LP249-NL43-NEG-0-A: data/pipeline/01-fastq_files/LP249-NL43-NEG-0-A.fastq
+    LP249-NL43-NEG-0-B: data/pipeline/01-fastq_files/LP249-NL43-NEG-0-B.fastq
+    LP249-NL43-NEG-0-C: data/pipeline/01-fastq_files/LP249-NL43-NEG-0-C.fastq
+    LP249-NL43-pUC19-1-A: data/pipeline/01-fastq_files/LP249-NL43-pUC19-1-A.fastq
+    LP249-NL43-pUC19-1-B: data/pipeline/01-fastq_files/LP249-NL43-pUC19-1-B.fastq
+    LP249-NL43-pUC19-1-C: data/pipeline/01-fastq_files/LP249-NL43-pUC19-1-C.fastq
+    LP249-NL43-pUC19-10-A: data/pipeline/01-fastq_files/LP249-NL43-pUC19-10-A.fastq
+    LP249-NL43-pUC19-10-B: data/pipeline/01-fastq_files/LP249-NL43-pUC19-10-B.fastq
+    LP249-NL43-pUC19-10-C: data/pipeline/01-fastq_files/LP249-NL43-pUC19-10-C.fastq
+    LP249-NL43-Sparsomycin-0-A: data/pipeline/01-fastq_files/LP249-NL43-Sparsomycin-0-A.fastq
+    LP249-NL43-Sparsomycin-0-B: data/pipeline/01-fastq_files/LP249-NL43-Sparsomycin-0-B.fastq
+    LP249-NL43-Sparsomycin-0-C: data/pipeline/01-fastq_files/LP249-NL43-Sparsomycin-0-C.fastq
+    LP249-NL43-WT-1-A: data/pipeline/01-fastq_files/LP249-NL43-WT-1-A.fastq
+    LP249-NL43-WT-1-B: data/pipeline/01-fastq_files/LP249-NL43-WT-1-B.fastq
+    LP249-NL43-WT-1-C: data/pipeline/01-fastq_files/LP249-NL43-WT-1-C.fastq
+    LP249-NL43-WT-1-P1: data/pipeline/01-fastq_files/LP249-NL43-WT-1-P1.fastq
+    LP249-NL43-WT-1-P2: data/pipeline/01-fastq_files/LP249-NL43-WT-1-P2.fastq
+    # LP252
+    LP252-NL43-WT-1-A: data/pipeline/01-fastq_files/LP252-NL43-WT-1-A.fastq
+    LP252-NL43-WT-1-B: data/pipeline/01-fastq_files/LP252-NL43-WT-1-B.fastq
+    LP252-NL43-WT-1-C: data/pipeline/01-fastq_files/LP252-NL43-WT-1-C.fastq
+    LP252-NL43-WT-1-D: data/pipeline/01-fastq_files/LP252-NL43-WT-1-D.fastq
+    LP252-NL43-WT-1-E: data/pipeline/01-fastq_files/LP252-NL43-WT-1-E.fastq
+    LP252-NL43-WT-1-F: data/pipeline/01-fastq_files/LP252-NL43-WT-1-F.fastq
+    LP252-NL43-WT-1-G: data/pipeline/01-fastq_files/LP252-NL43-WT-1-G.fastq
+    LP252-NL43-WT-1-H: data/pipeline/01-fastq_files/LP252-NL43-WT-1-H.fastq
+    LP252-NL43-WT-1-I: data/pipeline/01-fastq_files/LP252-NL43-WT-1-I.fastq
+    LP252-NL43-WT-1-J: data/pipeline/01-fastq_files/LP252-NL43-WT-1-J.fastq
+    LP252-NL43-WT-1-K: data/pipeline/01-fastq_files/LP252-NL43-WT-1-K.fastq
+    LP252-NL43-WT-1-L: data/pipeline/01-fastq_files/LP252-NL43-WT-1-L.fastq
+    LP252-NL43-WT-1-M: data/pipeline/01-fastq_files/LP252-NL43-WT-1-M.fastq
+    LP252-NL43-WT-1-N: data/pipeline/01-fastq_files/LP252-NL43-WT-1-N.fastq
+    LP252-NL43-WT-1-O: data/pipeline/01-fastq_files/LP252-NL43-WT-1-O.fastq
+    LP253-NL43-WT-1-A: data/pipeline/01-fastq_files/LP253-NL43-WT-1-A.fastq
+    LP253-NL43-WT-1-B: data/pipeline/01-fastq_files/LP253-NL43-WT-1-B.fastq
+    LP253-NL43-WT-1-C: data/pipeline/01-fastq_files/LP253-NL43-WT-1-C.fastq
+    LP253-NL43-WT-1-D: data/pipeline/01-fastq_files/LP253-NL43-WT-1-D.fastq
+    LP253-NL43-WT-1-E: data/pipeline/01-fastq_files/LP253-NL43-WT-1-E.fastq
+    LP253-NL43-WT-1-F: data/pipeline/01-fastq_files/LP253-NL43-WT-1-F.fastq
+    LP253-NL43-WT-1-G: data/pipeline/01-fastq_files/LP253-NL43-WT-1-G.fastq
+    LP253-NL43-WT-1-H: data/pipeline/01-fastq_files/LP253-NL43-WT-1-H.fastq
+    LP253-NL43-WT-1-I: data/pipeline/01-fastq_files/LP253-NL43-WT-1-I.fastq
+    LP253-NL43-WT-1-J: data/pipeline/01-fastq_files/LP253-NL43-WT-1-J.fastq
+    LP253-NL43-WT-1-K: data/pipeline/01-fastq_files/LP253-NL43-WT-1-K.fastq
+    LP253-NL43-WT-1-L: data/pipeline/01-fastq_files/LP253-NL43-WT-1-L.fastq
+    LP253-NL43-WT-1-M: data/pipeline/01-fastq_files/LP253-NL43-WT-1-M.fastq
+    LP253-NL43-WT-1-N: data/pipeline/01-fastq_files/LP253-NL43-WT-1-N.fastq
+    LP253-NL43-WT-1-O: data/pipeline/01-fastq_files/LP253-NL43-WT-1-O.fastq
+    # LP253
+    LP253-NL43-WT-1-P: data/pipeline/01-fastq_files/LP253-NL43-WT-1-P.fastq
+    LP253-NL43-WT-1-Q: data/pipeline/01-fastq_files/LP253-NL43-WT-1-Q.fastq
+    LP253-NL43-WT-1-R: data/pipeline/01-fastq_files/LP253-NL43-WT-1-R.fastq
+    LP253-NL43-WT-1-S: data/pipeline/01-fastq_files/LP253-NL43-WT-1-S.fastq
+    LP253-NL43-WT-1-T: data/pipeline/01-fastq_files/LP253-NL43-WT-1-T.fastq
+    LP253-NL43-WT-1-U: data/pipeline/01-fastq_files/LP253-NL43-WT-1-U.fastq
+    LP253-NL43-WT-1-V: data/pipeline/01-fastq_files/LP253-NL43-WT-1-V.fastq
+    LP253-NL43-WT-1-W: data/pipeline/01-fastq_files/LP253-NL43-WT-1-W.fastq
+    LP253-NL43-WT-1-X: data/pipeline/01-fastq_files/LP253-NL43-WT-1-X.fastq
+    LP253-NL43-WT-1-Y: data/pipeline/01-fastq_files/LP253-NL43-WT-1-Y.fastq
+    LP253-NL43-WT-1-Z: data/pipeline/01-fastq_files/LP253-NL43-WT-1-Z.fastq
+    LP253-NL43-WT-1-AA: data/pipeline/01-fastq_files/LP253-NL43-WT-1-AA.fastq
+    LP252-NL43-WT-1-P: data/pipeline/01-fastq_files/LP252-NL43-WT-1-P.fastq
+    LP252-NL43-WT-1-Q: data/pipeline/01-fastq_files/LP252-NL43-WT-1-Q.fastq
+    LP252-NL43-WT-1-R: data/pipeline/01-fastq_files/LP252-NL43-WT-1-R.fastq
+    LP252-NL43-WT-1-S: data/pipeline/01-fastq_files/LP252-NL43-WT-1-S.fastq
+    LP252-NL43-WT-1-T: data/pipeline/01-fastq_files/LP252-NL43-WT-1-T.fastq
+    LP252-NL43-WT-1-U: data/pipeline/01-fastq_files/LP252-NL43-WT-1-U.fastq
+    LP252-NL43-WT-1-V: data/pipeline/01-fastq_files/LP252-NL43-WT-1-V.fastq
+    LP252-NL43-WT-1-W: data/pipeline/01-fastq_files/LP252-NL43-WT-1-W.fastq
+    LP252-NL43-WT-1-X: data/pipeline/01-fastq_files/LP252-NL43-WT-1-X.fastq
+    LP252-NL43-WT-1-Y: data/pipeline/01-fastq_files/LP252-NL43-WT-1-Y.fastq
+    LP252-NL43-WT-1-Z: data/pipeline/01-fastq_files/LP252-NL43-WT-1-Z.fastq
+    LP252-NL43-WT-1-AA: data/pipeline/01-fastq_files/LP252-NL43-WT-1-AA.fastq
+    # ePCR Control samples:
+    LP249-ePCR-WT-1-A: data/pipeline/01-fastq_files/LP249-ePCR-WT-1-A.fastq
+    LP249-ePCR-WT-1-B: data/pipeline/01-fastq_files/LP249-ePCR-WT-1-B.fastq
+    LP249-ePCR-WT-1-C: data/pipeline/01-fastq_files/LP249-ePCR-WT-1-C.fastq
+    LP252-ePCR-WT-1-A: data/pipeline/01-fastq_files/LP252-ePCR-WT-1-A.fastq
+    LP252-ePCR-WT-1-B: data/pipeline/01-fastq_files/LP252-ePCR-WT-1-B.fastq
+    LP252-ePCR-WT-1-C: data/pipeline/01-fastq_files/LP252-ePCR-WT-1-C.fastq
+    LP253-ePCR-WT-1-A: data/pipeline/01-fastq_files/LP253-ePCR-WT-1-A.fastq
+    LP253-ePCR-WT-1-B: data/pipeline/01-fastq_files/LP253-ePCR-WT-1-B.fastq
+    LP253-ePCR-WT-1-C: data/pipeline/01-fastq_files/LP253-ePCR-WT-1-C.fastq
+
+
+# Reference directories (steps 2, 4, 7, 8, 9, 10, 11)
+references:
+  reference_dir: data/pipeline/00-reference_sequence
+  consensus_reference_dir: data/pipeline/00-consensus_reference
+  trimmed_reference_dir: data/pipeline/00-trimmed_reference
+  reference_map_dir: data/pipeline/00-reference-map
+  biological_reference_dir: data/pipeline/00-reference_sequence
+
+# Edge trimming: remove `bp` bases from EACH end of the trimmed reference before
+# consensus compilation (step 7) and mutation calling (step 8). This excludes
+# PCR-induced edge effects from BOTH the mutation-rate numerator (mutations
+# called) and denominator (compiled-consensus length), since both derive from
+# this reference. The reference-map CSVs are left untouched; the 5' shift is
+# compensated automatically via remap --offset. Set bp: 0 to disable.
+edge_trim:
+  bp: 0
+  output_dir: data/pipeline/00-edge_trimmed_reference
+
+# Step 1: FASTQ quality filtering (fastplong)
+step1_fastq_filter:
+  output_dir: data/pipeline/02-fastq_filtered
+  qualified_quality_phred: 25
+  unqualified_percent_limit: 50
+  disable_adapter_trimming: true
+  logs_html_dir: logs/1-fastq_filter/html
+  logs_json_dir: logs/1-fastq_filter/json
+
+# Step 2: Mapping (minimap2)
+step2_mapping:
+  threads: 4
+  output_dir: data/pipeline/03-mapped_reads
+  log_dir: logs/2-mapping_logs
+
+# Step 3: Sorting and Indexing (samtools)
+step3_sort_index:
+  sorted_dir: data/pipeline/04-sorted_reads
+
+# Step 4: UMI map and error-correction (belt umi-map --whitelist cluster)
+step5_umi_map:
+  motif: "['NNNNNNNNNNNN', 'NNNNNNNNNNNN']"
+  min_read_length: 3850
+  output_dir: data/pipeline/05-umi_maps
+  max_distance: 3  # Edit distance threshold for clustering (1 = single base errors)
+  log_dir: logs/5-umi_map/json
+
+# Step 5: UMI grouping (belt umi-group; prefilter via scripts/pipeline/03_filter_umis_for_grouping.py)
+step6_umi_group:
+  grouping: "UMI1"
+  threshold: 5
+  min_umi_count_for_grouping: 5   # Prefilter: only pass UMIs with ≥ this many reads into grouping
+  umi2_majority_threshold: 0.2  # Fraction of reads required to have majority UMI2 (0.0-1.0).
+  output_dir: data/pipeline/06-umi_groups
+  log_dir: logs/6-umi_group
+
+# Step 7: Consensus calling (belt consensus)
+step7_consensus:
+  threads: 8
+  output_base_dir: data/pipeline/07-consensus_calls
+  log_dir: logs/consensus
+  method: bcftools  # Options: "bcftools" (default), "medaka" (legacy)
+  # Require 80% of reads to support a variant for it to be included in consensus (default: majority >50%)
+  min_allele_fraction: 0.8
+
+# Step 7: Compile consensus FASTAs (trim via scripts/pipeline/trim_consensus_to_reference.py)
+step8_compile_consensus:
+  output_dir: data/pipeline/08-compiled_consensus
+
+# Step 8: Mutation calling (belt mutation-call; remap via scripts/pipeline/remap_mutation_positions.py)
+step9_mutation_calling:
+  threads: 8
+  output_dir: data/pipeline/09-mutation_calling_ERRSeq-PAPER-SAMPLES
+  log_dir: logs/mutation_calling_ERRSeq-PAPER-SAMPLES
+
+# Step 9: Mutation analysis summary (belt mutation-summary)
+step10_mutation_analysis:
+  input_dir: data/pipeline/09-mutation_calling_ERRSeq-PAPER-SAMPLES
+  output_dir: data/pipeline/10-mutation_analysis_ERRSeq-PAPER-SAMPLES
+  log_file: logs/mutation_analysis_real_samples_cluster.log
+
+# Step 11: Coding-region mutational effects (scripts/analysis/01_coding_analysis.py)
+# Maps all_mutations.csv to NL43 CDS features; classifies synonymous / missense / nonsense.
+step11_coding_analysis:
+  script: scripts/analysis/01_coding_analysis.py
+  output_dir: data/pipeline/11-analysis
+  genbank_file: data/pipeline/00-bed_files/NL43.gb
+  reference_fa: data/pipeline/00-consensus_reference/NL43.fa
+  log_file: logs/analysis/coding_analysis.log
+
+# Step 12: Prepare analysis data (scripts/analysis/00_prepare_data.py)
+# Reads step 10 outputs + sample groups from configs/analysis.yaml.
+# Writes enriched REC table for manual figure scripts (scripts/figures/).
+step12_prepare_analysis:
+  script: scripts/analysis/00_prepare_data.py
+  output_dir: data/pipeline/11-analysis
+  output_file: consensus_sequence_data.csv
+  sample_groups_config: configs/analysis.yaml
+  include_groups:
+    - samples
+    - controls
+  log_file: logs/analysis/prepare_rec_data.log
+
+# Back-compat alias (deprecated — use step12_prepare_analysis)
+step11_prepare_analysis:
+  script: scripts/analysis/00_prepare_data.py
+  output_dir: data/pipeline/11-analysis
+  output_file: consensus_sequence_data.csv
+  sample_groups_config: configs/analysis.yaml
+  include_groups:
+    - samples
+    - controls
+  log_file: logs/analysis/prepare_rec_data.log

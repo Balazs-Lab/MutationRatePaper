@@ -1,0 +1,7 @@
+# Mapping from library names to biological reference strains
+# Used by mutation remapping to determine which biological reference to use for validation
+
+LP249: NL43
+LP252: NL43
+LP253: NL43
+

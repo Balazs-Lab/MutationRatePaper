@@ -1,0 +1,3 @@
+level,comparison,pearson_r,n_windows
+sliding_window,observed_vs_modeled_rate_mean,0.803326916772058,812
+sliding_window,observed_vs_modeled_rate_weighted,0.8035654418430234,812
