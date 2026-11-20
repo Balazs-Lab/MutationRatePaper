@@ -133,6 +133,8 @@ If you use the MRA, ERR-Seq pipeline, or analysis code, please cite the manuscri
 
 A formal citation with journal, year, and DOI will be added upon publication.
 
+Current bioRxiv preprint can be found at:https://doi.org/10.64898/2026.11.19.767678
+
 ---
 
 ## License
