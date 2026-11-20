@@ -137,7 +137,7 @@ A formal citation with journal, year, and DOI will be added upon publication.
 
 ## License
 
-No repository-wide license file is currently included. **License status: TBD** (to be added by the authors before/at public release). The companion BELT toolkit is separately released under the MIT License.
+No repository-wide license file is currently included. **License status: CC-BY-NC 4.0 International license. The companion BELT toolkit is separately released under the MIT License.
 
 ---
 
